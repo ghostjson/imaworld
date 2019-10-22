@@ -31,7 +31,7 @@
 
 			<h1>Featured</h1>
 		<div class="featured">
-			<div v-for="item in featured" width="200px" :key>
+			<div v-for="{item, i} in featured" width="200px" :key="i">
 				<h2>{{item.title}}</h2>
 				<img :src="item.thumbnail" width="200px">
 				<p>{{item.description}}</p>

@@ -1,16 +1,14 @@
 <template>
-	
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link>
-      <router-link to="/login">Login</router-link>
-      <a v-on:click="logout">Logout</a>
-    </div>
+    <app-header></app-header>
     <router-view/>
   </div>
 </template>
 
 <script>
+
+  import Header from './components/Header'
+
 	export default {
 		name: 'app',
 
@@ -24,6 +22,9 @@
       logout(){
         localStorage.removeItem('Token')
       }
+    },
+    components: {
+      'app-header': Header
     }
 	};
 </script>
@@ -33,5 +34,13 @@
 *{
   margin: 0px;
   padding: 0px;
+}
+body{
+  margin: 0 50px;
+}
+
+a, a:visited, a:active, a:hover{
+    text-decoration: none;
+    color: black;
 }
 </style>
