@@ -1,150 +1,191 @@
 <template>
-	<div class="home">
-		<h2>Home</h2>
-		<div>
-			<input type="text" name="search" v-model="search">
-			<button v-on:click="getData">Search</button>
-		</div>
+    <div>
+    <div class="channels">
+        <div class="channel" @click="playPlaylist">My Playlist</div>
+        <div class="channel" v-for="(channel,i) in channels" :key="i" @click="playChannel(i)">{{channel.name}}</div>
+    </div>
+    <section class="content">
+        <videoplayer class="v"></videoplayer>
+        <searchvideo class="s"></searchvideo>
+    </section>
+        <div>
+            <div class="feature-heading">Feature Videos</div>
+            <div class="feature-videos">
+                <div class="feature-video-block" v-for="(item, i) in featured" :key="i">
+                    <div class="thumbnail">
+                        <img :src="item.thumbnail">
+                    </div>
+                    <div class="details">
+                        <div class="heading">{{item.title}}</div>
+                        <div id="icon-pack">
+                            <span class="icons" @click="playVideo(item)">
+                                <img :src="require('@/assets/icons/play-button.svg')">
+                            </span>
+                            <span class="icons" @click="addtoPlaylist(item)">
+                                <img :src="require('@/assets/icons/add-button.svg')">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-		<div class="container">
-			<div class="results">
-				<h1>Results</h1>
-				<div v-for="(item, i) in results.data" :key="i">
-					<h2>{{item.snippet.title}}</h2>
-					<img :src="item.snippet.thumbnails.medium.url">
-					<p>{{item.snippet.description}}</p>
-					<button v-on:click="addToPlaylist(i)">Add</button>
-				</div>
-			</div>
-
-			<div class="playlist">
-				<h1>Playlist</h1>
-				<div v-for="(item,i) in playlist" :key="i">
-					<h2>{{item.title}}</h2>
-					<img :src="item.thumbnail">
-					<p>{{item.description}}</p>
-					<button v-on:click="removeFromPlaylist(i)">Remove</button>
-				</div><br><br><br>
-				<button v-on:click="save">Save</button>
-			</div>
-		</div>
-
-			<h1>Featured</h1>
-		<div class="featured">
-			<div v-for="{item, i} in featured" width="200px" :key="i">
-				<h2>{{item.title}}</h2>
-				<img :src="item.thumbnail" width="200px">
-				<p>{{item.description}}</p>
-			</div>
-		</div>
-
-	</div>
-
-
-
+        </div>
+    </div> 
 </template>
-
 
 <script>
 
-import axios from 'axios';
+import VideoPlayer from '../components/VideoPlayer'
+import SearchVideo from '../components/SearchVideo'
+import axios from 'axios'
 
+export default {
+    name: 'design',
+    data(){
+        return {
+            featured: [],
+            channels: [],
+        }
+    },
+    components: {
+        'videoplayer': VideoPlayer,
+        'searchvideo': SearchVideo,
+    },
+    methods:{
+        playVideo(item){
+                console.log(item)
+                this.$root.$emit('play', item.id)
+        },
+        addtoPlaylist(item){
 
-export default 
-{	
-	name: 'home',
+            // let video = {
+            //     'id': item.id.videoId,
+            //     'title': item.snippet.title,
+            //     'thumbnail' : item.snippet.thumbnails.medium.url,
+            // };
+            console.log(item)
+            this.$root.$emit('addToPlaylist', item)
+        },
+        playChannel(i){
+            this.$root.$emit('playChannel', this.channels[i].videos)
+            this.$root.$emit('changePlaylist', this.channels[i].name)
+        },
+        playPlaylist(){
+            this.$root.$emit('playPlaylist')
+            this.$root.$emit('changePlaylist', 'My Playlist')
+        }
+    },
+    created(){
+        if(!localStorage.hasOwnProperty('Token')){
+            this.$router.replace('login')
+        }
+    },
+    mounted(){
+        let self = this
+        axios({
+          method: 'post',
+          url: `http://ghostjson.pythonanywhere.com/featured/`,
+          data: '',
+          headers:{
+            "Authorization" : "Token "+ localStorage.Token
+          }
+        })
+        .then(function(response){
+            self.featured = JSON.parse(response.data)
+        })
+        .catch(function(err){
+            console.log("Login Required to save")
+        });
 
-	data(){
-		return {
-			search : '',
-			results: '',
-			playlist: [],
-			featured: [
-				{
-					id: 'Z3Te1OlHGBs',
-					description: 'School Principal talks about association with Smile Foundation',
-					title: 'School Principal talks about association with Smile Foundation',
-					thumbnail: 'https://i.ytimg.com/vi/Z3Te1OlHGBs/mqdefault.jpg',
-				},
-				{
-					id: 'Z3Te1OlHGBs',
-					description: 'School Principal talks about association with Smile Foundation',
-					title: 'School Principal talks about association with Smile Foundation',
-					thumbnail: 'https://i.ytimg.com/vi/Z3Te1OlHGBs/mqdefault.jpg',
-				},
-				{
-					id: 'Z3Te1OlHGBs',
-					description: 'School Principal talks about association with Smile Foundation',
-					title: 'School Principal talks about association with Smile Foundation',
-					thumbnail: 'https://i.ytimg.com/vi/Z3Te1OlHGBs/mqdefault.jpg',
-				}
-				,
-				{
-					id: 'Z3Te1OlHGBs',
-					description: 'School Principal talks about association with Smile Foundation',
-					title: 'School Principal talks about association with Smile Foundation',
-					thumbnail: 'https://i.ytimg.com/vi/Z3Te1OlHGBs/mqdefault.jpg',
-				}
-			]
-		}
-	},
-	methods: {
-		getData(){
-			axios
-		      .get(`http://127.0.0.1:8000/search/?query=${this.search}`)
-		      .then(response => (this.results = response))
-		},
-		addToPlaylist(i){
-			let video = {
-				id: this.results.data[i].id.videoId,
-				title: this.results.data[i].snippet.title,
-				description: this.results.data[i].snippet.description,
-				thumbnail: this.results.data[i].snippet.thumbnails.medium.url,
-			}
-
-			let add = true;
-			for(let i=0;i<this.playlist.length;i++){
-				if(this.playlist[i].id == video.id){
-					add = false;
-					break;
-				}
-			}
-			if(add){
-				this.playlist.push(video);
-			}
-
-			console.log(this.playlist);
-		},
-		removeFromPlaylist(i){
-			this.playlist.splice(i, 1);
-		},
-		save(){
-			axios({
-			  method: 'post',
-			  url: 'http://127.0.0.1:8000/save/',
-			  data: this.playlist,
-			  headers:{
-			  	"Authorization" : "Token "+ localStorage.Token
-			  }
-			})
-			.catch(function(err){
-				console.log("Login Required to save")
-			});
-		}
-
-	}
+        axios({
+          method: 'post',
+          url: `http://ghostjson.pythonanywhere.com/channels/`,
+          data: '',
+          headers:{
+            "Authorization" : "Token "+ localStorage.Token
+          }
+        })
+        .then(function(response){
+            self.channels = JSON.parse(response.data)
+        })
+        .catch(function(err){
+            console.log("Login Required to save")
+        });
+    }
 };
-
 </script>
 
 <style scoped>
-	.container{
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		grid-gap: 50px;
-	}
-	.featured{
-		display: grid;
-		grid-template-columns: repeat(4, 1fr);
-	}
+
+section.content{
+	display: grid;
+	grid-template-columns: 5fr 3fr;
+    margin-bottom: 50px;
+    margin-top: 50px;
+}
+
+section .v{
+	margin-right: 60px;
+	border-radius: 10px;
+	background: #303030;
+}
+
+section .s{
+    background: #535353;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+
+
+.feature-heading{
+    font-size: 1.8em;
+    text-align: center;
+}
+
+
+.icons img{
+    padding-left: 10px;
+    padding-top: 5px;
+    width: 20px;
+    cursor: pointer;
+}
+#icon-pack{
+    height: 20px ;
+}
+
+.feature-videos{
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-gap: 20px;
+    margin-bottom: 20px;
+}
+
+.thumbnail img{
+    width: 250px;
+}
+
+.details .heading{
+    height: 45px;
+    overflow: hidden;
+}
+
+.channels{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 12px;
+}
+
+.channels .channel{
+    background: #8eda3b;
+    padding: 10px 40px;
+    margin: 0 5px;
+    border-radius: 20px;
+    font-size: 1em;
+    color: #303030;
+    font-weight: bolder;
+    cursor: pointer;
+}
+
 </style>

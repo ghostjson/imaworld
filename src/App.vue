@@ -2,6 +2,9 @@
   <div id="app">
     <app-header></app-header>
     <router-view/>
+    <footer>
+      All rights are reserved &copy imaworld
+    </footer>
   </div>
 </template>
 
@@ -14,26 +17,36 @@
 
     data(){
       return {
-
       }
 
     },
     methods:{
-      logout(){
-        localStorage.removeItem('Token')
+      authenticate(){
       }
     },
     components: {
       'app-header': Header
-    }
+    },
+
+    mounted(){
+      
+    },
+    watch:{
+      
+    } 
 	};
 </script>
 
 
 <style>
+@import url('https://fonts.googleapis.com/css?family=McLaren&display=swap');
 *{
   margin: 0px;
   padding: 0px;
+  font-family: 'McLaren', cursive;
+}
+input:focus{
+  outline: none;
 }
 body{
   margin: 0 50px;
@@ -42,5 +55,17 @@ body{
 a, a:visited, a:active, a:hover{
     text-decoration: none;
     color: black;
+}
+footer{
+  background: #303030;
+  margin-top: 50px;
+  padding: 5px;
+  text-align: center;
+  color: #fff;
+  height: 40px;
+  font-size: 1.2em;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  line-height: 40px;
 }
 </style>

@@ -1,3 +1,4 @@
+
 <template>
 	<div class="login">
 		<div class="form-box">
@@ -6,6 +7,7 @@
 			<div>
 				<form @submit.prevent class="login-form">	
 					<input type="text" name="username" v-model="username" placeholder="Username"><br>
+					<input type="text" v-model="email" placeholder="Email"><br>
 					<input type="password" v-model="password" placeholder="Password"><br>
 					<button v-on:click="login">Submit</button>
 
@@ -29,6 +31,7 @@ export default {
 		return {
 			username: '',
 			password: '',
+			email:'',
 			message: ''
 		}
 
@@ -40,39 +43,40 @@ export default {
 				let self = this
 
 				try{
+
+					console.log({
+					  	'username':this.username,
+					  	'password':this.password,
+					  	'email': this.email
+					  });
+
 					axios({
+				
 					  method: 'post',
-					  url: `http://ghostjson.pythonanywhere.com/login/`,
+					  url: `http://ghostjson.pythonanywhere.com/register/`,
 					  data: {
 					  	'username':this.username,
 					  	'password':this.password,
+					  	'email': this.email
 					  },
 					})
 					.then(function (response){
 						localStorage.setItem("Token",response.data)
 						self.$root.$emit('login', true)
 						window.location.href = '/'
-						// console.log(localStorage.Token)
 					})
 
 					.catch(function(err){
 						console.log(err)
-						self.message = 'Username or password is incorrect'
 					});
 				}catch(err){
 					console.log(err)
 				}
 				
 			}else{
-				this.message = "Username and Password should not be empty."
 			}
 
 
-		}
-	},
-	mounted(){
-		if(localStorage.hasOwnProperty('Token')){
-			this.$router.push('/')
 		}
 	}
 

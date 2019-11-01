@@ -14,7 +14,7 @@
                 <router-link to="/signup">SignUp</router-link>
             </div>
             <div v-if="login">
-                <router-link to="/logout">logout</router-link>
+                <router-link to="/logout">Logout</router-link>
             </div>
         </div>
     </header>
@@ -30,8 +30,15 @@ export default {
     },
     methods: {
 
+    },
+    mounted(){
+        if(localStorage.hasOwnProperty('Token')){
+            this.login = true
+        }else{
+            this.login = false
+        }
     }
-}
+};
 </script>
 
 <style scoped>
@@ -42,6 +49,7 @@ header{
     color: #303030;
     font-size: 1.2em;
     font-weight: bold;
+    border-bottom: 1px solid #32313142;
 }
 
 header img{
@@ -58,6 +66,9 @@ header .routes div{
     line-height: 70px;
 }
 
+*{
+    font-family: 'McLaren', cursive;
+}
 
 
 </style>
