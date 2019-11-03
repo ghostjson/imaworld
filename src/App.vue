@@ -45,6 +45,10 @@
   padding: 0px;
   font-family: 'McLaren', cursive;
 }
+
+iframe{
+    pointer-events: none;
+}
 input:focus{
   outline: none;
 }

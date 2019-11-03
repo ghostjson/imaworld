@@ -1,7 +1,7 @@
 <template>
     <div>
     <div class="channels">
-        <div class="channel" @click="playPlaylist">My Playlist</div>
+        <div class="channel" @click="playPlaylist">My Playlists</div>
         <div class="channel" v-for="(channel,i) in channels" :key="i" @click="playChannel(i)">{{channel.name}}</div>
     </div>
     <section class="content">
@@ -57,22 +57,15 @@ export default {
                 this.$root.$emit('play', item.id)
         },
         addtoPlaylist(item){
-
-            // let video = {
-            //     'id': item.id.videoId,
-            //     'title': item.snippet.title,
-            //     'thumbnail' : item.snippet.thumbnails.medium.url,
-            // };
-            console.log(item)
             this.$root.$emit('addToPlaylist', item)
         },
         playChannel(i){
-            this.$root.$emit('playChannel', this.channels[i].videos)
+            this.$root.$emit('playChannel', this.channels)
             this.$root.$emit('changePlaylist', this.channels[i].name)
         },
         playPlaylist(){
             this.$root.$emit('playPlaylist')
-            this.$root.$emit('changePlaylist', 'My Playlist')
+            this.$root.$emit('changePlaylist', 'My Playlists')
         }
     },
     created(){

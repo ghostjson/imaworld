@@ -4,8 +4,24 @@
             <div class="video">
                 <video-window :source="id" :plStatus="isPlaylistChanged"></video-window>
             </div>
+
+            <form class="playlist-select" v-on:submit.prevent>
+                <span v-if="addPlaylist">
+                    <input type="text" name="addfeature" v-model="playlistname" class="playlist-add" placeholder="playlist name">
+                    <img class="add-icon" :src="require('@/assets/icons/add-playlist-button.svg')" @click="addNewPlaylist">
+                    <img class="cancel-icon" :src="require('@/assets/icons/cancel-button.svg')" @click="addPlaylist=0">
+                </span>
+                <span v-else>
+                    <select class="select-channel" v-model="playN"  @click="changePlaylist">
+                        <option :value="i"  v-for="(playlist,i) in playlists" :key="i" >{{playlist.name}}</option>
+                    </select>
+                    <img class="add-icon" :src="require('@/assets/icons/add-playlist-button.svg')" @click="addPlaylist=1">
+                    <img class="remove-icon" :src="require('@/assets/icons/remove-button.svg')" @click="removePlaylist">
+                </span>
+            </form>
+
             <div class="playlist">
-                <div class="video-item" v-for="(video,i) in playlist" :key="i">
+                <div class="video-item" v-for="(video,i) in playlists[playN].videos" :key="i">
                     <img :src="video.thumbnail">
                     <div class="video-details">
                         <div class="play" @click="playVideo(video)">
@@ -34,10 +50,13 @@ export default {
     data(){
         return{
             id: '18OywdkVT2o',
-            playlist : [],
+            playlists : [],
             isPlaylistChanged: 0,
             currentPlay: 0,
-            disabled: false
+            disabled: false,
+            playN: 0,
+            addPlaylist: 0,
+            playlistname: ''
         }
     },
     methods: {
@@ -46,12 +65,32 @@ export default {
             this.$root.$emit('playerPlay')
         },
         removeFromPlaylist(i){
-            this.playlist.splice(i, 1);
+            this.playlists[this.playN].videos.splice(i, 1);
             this.isPlaylistChanged = 1
         },
         searchVideo(title){
             this.$root.$emit('searchRelated', title)
-        }
+        },
+        shuffle(array) {
+            array.sort(() => Math.random() - 0.5);
+        },
+        changePlaylist(){
+
+        },
+        addNewPlaylist(){
+            let playlist  = {
+                name: this.playlistname,
+                videos: []
+            }
+
+            this.playlists.push(playlist)
+            this.addPlaylist = 0
+            this.isPlaylistChanged = 1
+        },
+        removePlaylist(){
+            this.playlists.splice(this.playN, 1);
+            this.isPlaylistChanged = 1
+        },
     },
     components: {
         'video-window' : VideoWindow
@@ -61,8 +100,12 @@ export default {
     },
     mounted(){
 
+        let self = this
 
-
+        this.$root.$on('shuffle', ()=>{
+            this.shuffle(this.playlists[this.playN].videos)
+            this.currentPlay = -1
+        });
 
 
         this.$root.$on('play',(id)=>{
@@ -72,25 +115,26 @@ export default {
 
         this.$root.$on('addToPlaylist', (video)=>{
             let add = true;
-            for(let i=0;i<this.playlist.length;i++){
-                if(this.playlist[i].id == video.id){
+            for(let i=0;i<this.playlists[this.playN].videos.length;i++){
+                if(this.playlists[this.playN].videos[i].id == video.id){
                     console.log('same id')
                     add = false;
                     break;
                 }
             }
             if(add){
-                this.playlist.push(video);
+                console.log(this.playlists[this.playN].videos)
+                this.playlists[this.playN].videos.push(video);
                 this.isPlaylistChanged = 1;
             }
         });
 
         this.$root.$on('savePlaylist', ()=>{
-            console.log('save')
+
             axios({
               method: 'post',
               url: `http://ghostjson.pythonanywhere.com/save/`,
-              data: this.playlist,
+              data: self.playlists,
               headers:{
                 "Authorization" : "Token "+ localStorage.Token
               }
@@ -103,7 +147,6 @@ export default {
             });
         });
 
-        let self = this
         axios({
           method: 'post',
           url: `http://ghostjson.pythonanywhere.com/playlist/`,
@@ -113,8 +156,8 @@ export default {
           }
         })
         .then(function(response){
-            self.playlist = JSON.parse(response.data)
-            self.playVideo(self.playlist[self.currentPlay])
+            self.playlists = JSON.parse(response.data)
+            self.playVideo(self.playlists[self.playN].videos[self.currentPlay])
         })
         .catch(function(err){
             console.log("Login Required to save")
@@ -122,46 +165,53 @@ export default {
         
         this.$root.$on('playNext',()=>{
             this.currentPlay += 1
-            this.playVideo(this.playlist[this.currentPlay])
+            this.playVideo(this.playlists[this.playN].videos[this.currentPlay])
+            if(this.currentPlay == this.playlists[this.playN].videos.length){
+                this.currentPlay = 0
+            }
         });
 
         this.$root.$on('playPrev',()=>{
-            this.currentPlay -= 1
-            this.playVideo(this.playlist[this.currentPlay])
+            if(this.currentPlay > 0){    
+                this.currentPlay -= 1
+                this.playVideo(this.playlists[this.playN].videos[this.currentPlay])
+            }
         });
 
-        this.$root.$on('playChannel',(channel)=>{
-            this.playlist = channel
+        this.$root.$on('playChannel',channel=>{
+            this.playlists = channel
             this.currentPlay = 0
-            this.playVideo(this.playlist[this.currentPlay])
+            this.disabled = true
         });
 
         this.$root.$on('changePlaylist', (_)=>{
-                if(_ != 'My Playlist'){
-                    this.disabled = true
-                }
-                else{
-                    this.disabled = false
-                }
+
+                this.playN = this.playlists.findIndex(k => k.name == _ )
+                this.playVideo(this.playlists[this.playN].videos[this.currentPlay])
+
         });
 
         this.$root.$on('playPlaylist', ()=>{
+            console.log(localStorage.Token)
             let self = this
-        axios({
-          method: 'post',
-          url: `http://ghostjson.pythonanywhere.com/playlist/`,
-          data: '',
-          headers:{
-            "Authorization" : "Token "+ localStorage.Token
-          }
-        })
-        .then(function(response){
-            self.playlist = JSON.parse(response.data)
-            self.playVideo(self.playlist[self.currentPlay])
-        })
-        .catch(function(err){
-            console.log("Login Required to save")
-      });
+            axios({
+              method: 'post',
+              url: `http://ghostjson.pythonanywhere.com/playlist/`,
+              data: '',
+              headers:{
+                "Authorization" : "Token "+ localStorage.Token
+              }
+            })
+            .then(function(response){
+                self.playlists = JSON.parse(response.data)
+                self.currentPlay = 0
+                self.playN = 0
+                self.playVideo(self.playlists[self.playN].videos[self.currentPlay])
+                self.disabled = false
+            })
+            .catch(function(err){
+                console.log(err)
+            });
         });
     }
 };
@@ -234,6 +284,46 @@ section{
 .playlist .video-item .video-details div img{
     width: inherit;
 }
+
+.playlist-select{
+    margin-bottom: 10px;
+}
+
+.playlist-button{
+    margin-left: 5px;
+}
+
+.add-icon{
+    width: 25px;
+    margin-left: 10px;
+    cursor: pointer;
+    position: absolute;
+}
+
+.cancel-icon{
+    width: 28px;
+    margin-left: 40px;
+    margin-top: 2px;
+    cursor: pointer;
+    position: absolute;
+}
+
+.playlist-add{
+    background: #535353;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 20px;
+    color: #FFF;
+}
+
+.remove-icon{
+    width: 28px;
+    margin-left: 40px;
+    margin-top: 2px;
+    cursor: pointer;
+    position: absolute; 
+}
+
 
 
 </style>

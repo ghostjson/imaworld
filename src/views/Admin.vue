@@ -38,6 +38,7 @@
 					<option :value="i"  v-for="(channel,i) in channels" :key="i" >{{channel.name}}</option>
 				</select>
 				<input type="text" name="addChannel" v-model="newChannel"><button @click="addChannel()">Add</button>
+				<button @click="removeChannel()">Remove</button>
 			</form>
             <div class="feature">
                 <div class="video-item" v-for="(video,i) in channels[chanN].videos" :key="i">
@@ -148,7 +149,7 @@
 			saveChannel(){
 				axios({
 	              method: 'post',
-	              url: `this.apihost}/saveChannel/`,
+	              url: `http://ghostjson.pythonanywhere.com/saveChannel/`,
 	              data: this.channels,
 	              headers:{
 	                "Authorization" : "Token "+ localStorage.Token
@@ -165,6 +166,13 @@
 				this.channels[this.chanN].videos.splice(i, 1)
 				this.saveChannel()
 			},
+			removeChannel(){
+				this.channels.splice(this.chanN,1)
+				if(this.channels.length == this.chanN){
+					this.chanN -= 1
+				}
+				this.saveChannel()
+			}
 		},
     mounted(){
         if(!localStorage.hasOwnProperty('Token')){

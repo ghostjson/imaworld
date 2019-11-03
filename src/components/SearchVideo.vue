@@ -1,6 +1,9 @@
 <template>
 	<div class="search">
 		<div class="search-block">
+			<span class="lock-button-icon" @click="locksearch">
+				<img class="search-button" :src="lockedButton">
+			</span>
 			<input type="text" name="search" v-model="search" :disabled="disabled" placeholder="search here..." v-on:keyup.enter="getData">
 			<span class="search-button-icon" @click="getData" :disabled="disabled"><img class="search-button" :src="require('@/assets/icons/search-button.svg')"></span>
 		</div>
@@ -44,7 +47,8 @@
 				search: '',
 				quatity: 1,
 				isShowMore: false,
-				disabled: false
+				disabled: false,
+				lockedButton: require('@/assets/icons/unlocked-state.svg')
 			}
 		},
 		methods:{
@@ -76,9 +80,20 @@
 					'thumbnail' : item.snippet.thumbnails.medium.url,
 				};
 				this.$root.$emit('addToPlaylist', video)
+			},
+			locksearch(){
+				if(!this.disabled){
+					this.disabled = true
+					this.lockedButton = require('@/assets/icons/lock-state.svg');
+				}else{
+					this.disabled  = false
+					this.lockedButton = require('@/assets/icons/unlocked-state.svg');
+				}
 			}
 		},
 		mounted(){
+
+
 			this.$root.$on('changePlaylist', (_)=>{
 
 				if(_ != 'My Playlist'){
@@ -131,6 +146,13 @@ div.search span.search-button-icon{
 	top: 30px;
 }
 
+div.search span.lock-button-icon{
+	position: absolute;
+	left: 10%;
+	top: 30px;
+	cursor: pointer;
+}
+
 .search-button{
 	width: 25px;
 }
@@ -150,7 +172,6 @@ div.details{
 }
 .search-results 
 .search-results-block{
-    /*background: rgb(142,218,59);*/
 	background: #72da21;	
     display: flex;
     padding: 5px;
@@ -163,7 +184,7 @@ div.details{
 }
 
 .heading{
-    font-size: 1.1em;
+    font-size: 0.8em;
     font-weight: bold;
     height: 90.3px;
     overflow: hidden;
@@ -178,7 +199,6 @@ div.details{
 
 .icons img{
     padding-left: 10px;
-    padding-top: 5px;
     width: 20px;
     cursor: pointer;
 }

@@ -12,8 +12,14 @@
         </youtube>
 
         <div class="controls">
+            <span id="video-stop" class="control" @click="shuffle">
+                <img :src="require('@/assets/icons/shuffle-button.svg')">
+            </span>
             <span id="playlist-save" class="control" @click="savePlaylist">
                 <img :src="playlistButton">
+            </span>
+            <span id="video-backward" class="control" @click="$root.$emit('seekBackward')">
+                <img :src="require('@/assets/icons/backward-button.svg')">
             </span>
             <span id="video-prev" class="control" @click="playPrev">
                 <img :src="require('@/assets/icons/previous-button.svg')">
@@ -24,12 +30,20 @@
             <span id="video-next" class="control" @click="playNext">
                 <img :src="require('@/assets/icons/next-button.svg')">
             </span>
+            <span id="video-forward" class="control" @click="$root.$emit('seekForward')">
+                <img :src="require('@/assets/icons/forward-button.svg')">
+            </span>
             <span id="video-stop" class="control" @click="playStop">
                 <img :src="require('@/assets/icons/stop-button.svg')">
+            </span>
+
+            <span id="video-full" class="control" @click="fullscreen">
+                <img :src="require('@/assets/icons/fullscreen-button.svg')">
             </span>
             <span class="playing-status">
                 Playing: <span>{{current_playing}}</span>
             </span>
+            
         </div>
     </div>
 </template>
@@ -52,14 +66,14 @@ export default {
                 controls: 0,
                 modestbranding: 1,
                 rel: 0,
-                showInfo: 0,
+                showinfo: 0,
                 fs: 1,
             },
             isPlaying: false,
             playButton: require('@/assets/icons/play-button.svg'),
             playlistButton: require(`@/assets/icons/save0-button.svg`),
-            current_playing: 'My Playlist',
-            disabled: false
+            current_playing: 'My Playlists',
+            disabled: false,
         }
     },
     methods:{
@@ -74,6 +88,17 @@ export default {
         playing(){
             this.isPlaying = true;
             this.playButton = require('@/assets/icons/pause-button.svg')
+
+            this.$root.$on('seekForward', ()=>{
+                this.player.getCurrentTime().then(t=>{
+                    this.player.seekTo(t+5, true)
+                });
+            });
+            this.$root.$on('seekBackward', ()=>{
+                this.player.getCurrentTime().then(t=>{
+                    this.player.seekTo(t-5, true)
+                });
+            });
         },
         paused(){
             this.isPlaying =  false;
@@ -99,12 +124,23 @@ export default {
             this.player.stopVideo()
             this.isPlaying =  false;
             this.playButton = require('@/assets/icons/play-button.svg')
+        },
+        fullscreen(){
+            let f = this.player.getIframe()
+            this.player.playVideo();           
+            f.then((res)=>{
+                res.requestFullscreen()
+            });
+        },
+        shuffle(){
+            this.$root.$emit('shuffle');
         }
     },
     mounted(){
         this.$root.$on('playerPlay',()=>{
             this.player.playVideo()
         });
+
 
 
         this.$root.$on('changePlaylist', (name)=>{
@@ -139,6 +175,9 @@ export default {
 
 <style scoped>
 
+
+
+
 .controls{
     margin-top: 10px;
     margin-bottom: 10px;
@@ -156,10 +195,10 @@ export default {
     width: 22px;
 }
 .playing-status{
-    font-size: 1.2em;
+    font-size: 1.1em;
     position: absolute;
     font-family: Impact, sans-serif;
-    left: 50px;
+    left: 0px;
     color: #FFF;
     font-weight: 600;
 }
