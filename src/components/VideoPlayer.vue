@@ -5,7 +5,7 @@
                 <video-window :source="id" :plStatus="isPlaylistChanged"></video-window>
             </div>
 
-            <form class="playlist-select" v-on:submit.prevent>
+            <form class="playlist-select" v-on:submit.prevent v-if="!disabled">
                 <span v-if="addPlaylist">
                     <input type="text" name="addfeature" v-model="playlistname" class="playlist-add" placeholder="playlist name">
                     <img class="add-icon" :src="require('@/assets/icons/add-playlist-button.svg')" @click="addNewPlaylist">
@@ -56,7 +56,7 @@ export default {
             disabled: false,
             playN: 0,
             addPlaylist: 0,
-            playlistname: ''
+            playlistname: '',
         }
     },
     methods: {
@@ -192,7 +192,6 @@ export default {
         });
 
         this.$root.$on('playPlaylist', ()=>{
-            console.log(localStorage.Token)
             let self = this
             axios({
               method: 'post',

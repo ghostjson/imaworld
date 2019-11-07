@@ -282,7 +282,7 @@
 
 .feature{
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(8, 1fr);
     grid-template-rows: repeat(8, 5vw);
     width: 95%;
     grid-gap: 30px;

@@ -91,7 +91,7 @@ export default
 	methods: {
 		getData(){
 			axios
-		      .get(`http://127.0.0.1:8000/search/?query=${this.search}`)
+		      .get(`http://ghostjson.pythonanywhere.com/search/?query=${this.search}`)
 		      .then(response => (this.results = response))
 		},
 		addToPlaylist(i){
@@ -121,7 +121,7 @@ export default
 		save(){
 			axios({
 			  method: 'post',
-			  url: 'http://127.0.0.1:8000/save/',
+			  url: 'http://ghostjson.pythonanywhere.com/save/',
 			  data: this.playlist,
 			  headers:{
 			  	"Authorization" : "Token "+ localStorage.Token

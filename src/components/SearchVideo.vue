@@ -6,6 +6,12 @@
 			</span>
 			<input type="text" name="search" v-model="search" :disabled="disabled" placeholder="search here..." v-on:keyup.enter="getData">
 			<span class="search-button-icon" @click="getData" :disabled="disabled"><img class="search-button" :src="require('@/assets/icons/search-button.svg')"></span>
+			<img class="link-button" :src="require('@/assets/icons/link-button.svg')" @click="linkVideo()"></span>
+		</div>
+		<div class="orderby" v-if="search!=''">
+			<span @click="changeOrder('relevance')">Relevance</span>
+			<span @click="changeOrder('viewCount')">View Count</span>
+			<span @click="changeOrder('rating')">Rating</span>
 		</div>
 		<div class="results-block">
 			<div class="search-results">
@@ -48,14 +54,14 @@
 				quatity: 1,
 				isShowMore: false,
 				disabled: false,
-				lockedButton: require('@/assets/icons/unlocked-state.svg')
+				lockedButton: require('@/assets/icons/unlocked-state.svg'),
 			}
 		},
 		methods:{
 			getData(){
 				if(this.search != ''){
 					axios
-				      .get(`http://ghostjson.pythonanywhere.com/search/?query=${this.search}&quatity=${this.quatity}`)
+				      .get(`http://ghostjson.pythonanywhere.com/search/?query=${this.search}&quatity=${this.quatity}&orderby=relevance`)
 				      .then(response => (this.searchResults = response))			
 
 				    this.isShowMore = true	
@@ -89,6 +95,38 @@
 					this.disabled  = false
 					this.lockedButton = require('@/assets/icons/unlocked-state.svg');
 				}
+			},
+			changeOrder(order){
+				if(this.search != ''){
+					axios
+				      .get(`http://ghostjson.pythonanywhere.com/search/?query=${this.search}&quatity=${this.quatity}&orderby=${order}`)
+				      .then(response => (this.searchResults = response))			
+
+				    this.isShowMore = true	
+				}
+			},
+			linkVideo(){
+				if(this.search != ''){
+					let self = this
+					let id  = this.youtube_parser(this.search)
+					axios
+			      	.get(`http://ghostjson.pythonanywhere.com/getvideo/?query=${id}`)
+			      	.then(response => {
+			      		let video  = {
+			      		id :response.data[0].id,
+			      		title: response.data[0].snippet.title,
+			      		thumbnail: response.data[0].snippet.thumbnails.medium.url
+			      		};
+
+			      		this.$root.$emit('addToPlaylist', video)
+			      		this.changePlaylist = 1
+			      	})
+				}
+			},
+			youtube_parser(url){
+    			var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+    			var match = url.match(regExp);
+    			return (match&&match[7].length==11)? match[7] : false;
 			}
 		},
 		mounted(){
@@ -153,11 +191,16 @@ div.search span.lock-button-icon{
 	cursor: pointer;
 }
 
-.search-button{
+.search-button, .link-button{
 	width: 25px;
 }
 
-
+.link-button{
+	position: absolute;
+	left: 85%;
+	top: 30px;
+	cursor: pointer;
+}
 
 div.details{
 	display: flex;
@@ -222,4 +265,20 @@ div.details{
 .show-more:hover{
 	font-size: 1.5em;
 }
+
+.orderby{
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	text-align: center;
+	margin-top: 12px;
+	margin-bottom: 12px;
+	text-decoration: underline;
+	color: #fff;
+}
+
+.orderby span{
+	cursor: pointer;
+}
+
+
 </style>
