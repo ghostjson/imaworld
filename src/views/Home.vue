@@ -1,6 +1,6 @@
 <template>
     <div>
-    <div class="channels">
+    <div class="channels dragscroll">
         <div class="channel" @click="playPlaylist">My Playlists</div>
         <div class="channel" v-for="(channel,i) in channels" :key="i" @click="playChannel(i)">{{channel.name}}</div>
     </div>
@@ -38,6 +38,7 @@
 import VideoPlayer from '../components/VideoPlayer'
 import SearchVideo from '../components/SearchVideo'
 import axios from 'axios'
+import dragscroll from 'dragscroll'
 
 export default {
     name: 'design',
@@ -165,9 +166,17 @@ section .s{
 }
 
 .channels{
+    width: 100%;
     display: flex;
+    margin: 0 auto;
     justify-content: space-around;
     margin-top: 12px;
+    overflow-x: hidden;
+}
+
+.channels::before{
+    content : '';
+    margin: 0 120px;
 }
 
 .channels .channel{
