@@ -172,11 +172,12 @@ section .s{
     justify-content: space-around;
     margin-top: 12px;
     overflow-x: hidden;
+    cursor: pointer;
 }
 
 .channels::before{
     content : '';
-    margin: 0 120px;
+    margin: 0 130px;
 }
 
 .channels .channel{
@@ -188,6 +189,14 @@ section .s{
     color: #303030;
     font-weight: bolder;
     cursor: pointer;
+    text-align: center;
+    vertical-align: center;
+    white-space: nowrap;
+    transition: color 0.5s;
+}
+
+.channels .channel:hover{
+    color: black;
 }
 
 </style>

@@ -6,17 +6,27 @@
             </div>
 
             <form class="playlist-select" v-on:submit.prevent v-if="!disabled">
-                <span v-if="addPlaylist">
+                <span v-if="addPlaylist==1">
                     <input type="text" name="addfeature" v-model="playlistname" class="playlist-add" placeholder="playlist name">
-                    <img class="add-icon" :src="require('@/assets/icons/add-playlist-button.svg')" @click="addNewPlaylist">
-                    <img class="cancel-icon" :src="require('@/assets/icons/cancel-button.svg')" @click="addPlaylist=0">
+                    <!-- <img class="add-icon" :src="require('@/assets/icons/add-playlist-button.svg')" @click="addNewPlaylist"> -->
+                    <button class="playlist-add-button" @click="addNewPlaylist">Save</button>
+                    <!-- <img class="cancel-icon" :src="require('@/assets/icons/cancel-button.svg')" @click="addPlaylist=0"> -->
+                    <button class="playlist-add-button" @click="addPlaylist=0">Cancel</button>
+                </span>
+                <span v-else-if="addPlaylist==-1">
+                    Are you sure you want to delete the playlist? It is permanent!
+                    <button class="playlist-add-button" @click="removePlaylist">Yes</button>
+                    <!-- <img class="remove-icon" :src="require('@/assets/icons/remove-button.svg')" @click="removePlaylist"> -->
+                    <button class="playlist-add-button" @click="addPlaylist=0">Cancel</button> 
                 </span>
                 <span v-else>
                     <select class="select-channel" v-model="playN"  @click="changePlaylist">
                         <option :value="i"  v-for="(playlist,i) in playlists" :key="i" >{{playlist.name}}</option>
                     </select>
-                    <img class="add-icon" :src="require('@/assets/icons/add-playlist-button.svg')" @click="addPlaylist=1">
-                    <img class="remove-icon" :src="require('@/assets/icons/remove-button.svg')" @click="removePlaylist">
+                    <!-- <img class="add-icon" :src="require('@/assets/icons/add-playlist-button.svg')" @click="addPlaylist=1"> -->
+                    <button class="playlist-add-button" @click="addPlaylist=1">Create a palylist</button>
+                    <!-- <img class="remove-icon" :src="require('@/assets/icons/remove-button.svg')" @click="removePlaylist"> -->
+                    <button class="playlist-add-button" @click="addPlaylist=-1">Remove</button>
                 </span>
             </form>
 
@@ -89,7 +99,9 @@ export default {
         },
         removePlaylist(){
             this.playlists.splice(this.playN, 1);
+            this.playN = 0
             this.isPlaylistChanged = 1
+            this.addPlaylist = 0
         },
     },
     components: {
@@ -287,6 +299,15 @@ section{
 
 .playlist-select{
     margin-bottom: 10px;
+}
+
+.playlist-add-button{
+    padding: 4px 6px;
+    margin-left: 5px;
+    font-size: 0.8em;
+    border-radius: 12px;
+    border: 1px solid gray;
+    cursor: pointer;
 }
 
 .playlist-button{
