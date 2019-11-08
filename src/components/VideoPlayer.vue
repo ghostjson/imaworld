@@ -233,10 +233,10 @@ section{
 
 .playlist{
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(8, 5vw);
     width: 95%;
-    grid-gap: 30px;
+    grid-gap: 12px;
     padding: 20px;
     height: 400px;
     background: #535353;
@@ -245,7 +245,7 @@ section{
 }
 
 .playlist .video-item{
-    width: 140px;
+    width: 122px;
     position: relative;
 }
 
@@ -262,12 +262,12 @@ section{
   opacity: 0;
   position: absolute;
   left: 50%;
-  top: 59%;
+  top: 50%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   text-align: center;
   width: 100%;
-  height: 120%;
+  height: 100%;
   display: flex;
   align-items: center;
   background: rgba(0,0,0,0.5);
@@ -277,11 +277,12 @@ section{
     opacity: 1;
 }
 .playlist .video-item .video-details div{
-    width: 20px;
-    padding-left: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 .playlist .video-item .video-details div img{
-    width: inherit;
+    width: 20px;
 }
 
 .playlist-select{
