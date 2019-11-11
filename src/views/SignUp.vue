@@ -9,10 +9,11 @@
 					<input type="text" name="username" v-model="username" placeholder="Username"><br>
 					<input type="text" v-model="email" placeholder="Email"><br>
 					<input type="password" v-model="password" placeholder="Password"><br>
+					<input type="text" v-model="search_password" placeholder="Search Password"><br>
 					<button v-on:click="login">Submit</button>
 
 				</form>
-					<p class="message" v-if="message !=  ''">{{  message }}</p>
+					<p class="message">{{ message }}</p>
 			</div>
 		</div>
 	</div>
@@ -32,14 +33,15 @@ export default {
 			username: '',
 			password: '',
 			email:'',
-			message: ''
+			message: '',
+			search_password: ''
 		}
 
 	},
 	methods: {
 		login(){
 
-			if(this.username != '' && this.password != ''){
+			if(this.username != '' && this.password != '' && this.search_password != ''){
 				let self = this
 
 				try{
@@ -57,7 +59,8 @@ export default {
 					  data: {
 					  	'username':this.username,
 					  	'password':this.password,
-					  	'email': this.email
+					  	'email': this.email,
+					  	'search_password' : this.search_password
 					  },
 					})
 					.then(function (response){
@@ -68,12 +71,15 @@ export default {
 
 					.catch(function(err){
 						console.log(err)
+						self.message = "Username is already exist"
 					});
 				}catch(err){
 					console.log(err)
+					self.message = "Server Error"
 				}
 				
 			}else{
+				this.message = "All inputs are mantatory"
 			}
 
 

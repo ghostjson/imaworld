@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="home">
     <div class="channels dragscroll">
         <div class="channel" @click="playPlaylist">My Playlists</div>
         <div class="channel" v-for="(channel,i) in channels" :key="i" @click="playChannel(i)">{{channel.name}}</div>
@@ -8,7 +8,7 @@
         <videoplayer class="v"></videoplayer>
         <searchvideo class="s"></searchvideo>
     </section>
-        <div>
+        <div>   
             <div class="feature-heading">Feature Videos</div>
             <div class="feature-videos">
                 <div class="feature-video-block" v-for="(item, i) in featured" :key="i">
@@ -50,7 +50,7 @@ export default {
     },
     components: {
         'videoplayer': VideoPlayer,
-        'searchvideo': SearchVideo,
+        'searchvideo': SearchVideo,dragscroll
     },
     methods:{
         playVideo(item){
@@ -118,11 +118,17 @@ section.content{
     margin-top: 50px;
 }
 
+.home{
+    display: block;
+}
+
 section .v{
-	margin-right: 60px;
+	margin-right: 10px;
 	border-radius: 10px;
 	background: #303030;
+    width: 720px;
 }
+
 
 section .s{
     background: #535353;
@@ -151,18 +157,34 @@ section .s{
 .feature-videos{
     margin-top: 20px;
     display: grid;
-    grid-template-columns: repeat(4,1fr);
-    grid-gap: 20px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(5,1fr);
+    grid-gap: 5px;
 }
 
+/*@media only screen and (max-width: 1000px){
+    .feature-videos{
+        margin-top: 20px;
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        grid-gap: 5px;
+    }
+}*/
+
 .thumbnail img{
-    width: 250px;
+    width: 240px;
+}
+
+
+
+.details{
+    margin-bottom: 15px;
 }
 
 .details .heading{
     height: 45px;
     overflow: hidden;
+    font-size: 0.8em;
+    font-weight: 600;
 }
 
 .channels{
@@ -177,7 +199,7 @@ section .s{
 
 .channels::before{
     content : '';
-    margin: 0 130px;
+    margin: 0 3%;
 }
 
 .channels .channel{
@@ -199,4 +221,20 @@ section .s{
     color: black;
 }
 
+/*@media only screen and (max-width: 1000px){
+  section .v{
+    margin-right: 10px;
+    border-radius: 10px;
+    background: #303030;
+    width: 420px;
+  }
+  .thumbnail img{
+    width: 100%;
+    }
+
+}*/
+</style>
+
+<style>
+    
 </style>

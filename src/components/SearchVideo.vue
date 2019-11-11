@@ -1,12 +1,26 @@
 <template>
-	<div class="search">
-		<div class="search-block">
+	<div class="search" id="search-section">
+		<!-- <div class="search-block">
 			<span class="lock-button-icon" @click="locksearch">
 				<img class="search-button" :src="lockedButton">
 			</span>
 			<input type="text" name="search" v-model="search" :disabled="disabled" placeholder="search here..." v-on:keyup.enter="getData">
 			<span class="search-button-icon" @click="getData" :disabled="disabled"><img class="search-button" :src="require('@/assets/icons/search-button.svg')"></span>
 			<img class="link-button" :src="require('@/assets/icons/link-button.svg')" @click="linkVideo()"></span>
+		</div> -->
+		<div class="search-block">
+			<span v-if="search_state==0">
+				<input type="text" name="search" v-model="search_password_entered" placeholder="Enter Password To unlock">
+				<span class="lock-button-icon">
+					<img class="search-button" :src="lockedButton">
+				</span>
+			</span>
+			<span v-if="search_state==1">
+				<input type="text" name="search" v-model="search" :disabled="disabled" placeholder="search here..." v-on:keyup.enter="getData">
+				<span class="search-button-icon" @click="getData" :disabled="disabled"><img class="search-button" :src="require('@/assets/icons/search-button.svg')"></span>
+				<img class="link-button" :src="require('@/assets/icons/link-button.svg')" @click="linkVideo()">
+				<img class="search-button" :src="lockedButton" @click="locksearch">
+			</span>
 		</div>
 		<div class="orderby" v-if="search!=''">
 			<span @click="changeOrder('relevance')">Relevance</span>
@@ -54,7 +68,10 @@
 				quatity: 1,
 				isShowMore: false,
 				disabled: false,
-				lockedButton: require('@/assets/icons/unlocked-state.svg'),
+				lockedButton: require('@/assets/icons/lock-state.svg'),
+				search_password: '',
+				search_state: 0,
+				search_password_entered: ''
 			}
 		},
 		methods:{
@@ -88,13 +105,9 @@
 				this.$root.$emit('addToPlaylist', video)
 			},
 			locksearch(){
-				if(!this.disabled){
-					this.disabled = true
-					this.lockedButton = require('@/assets/icons/lock-state.svg');
-				}else{
-					this.disabled  = false
-					this.lockedButton = require('@/assets/icons/unlocked-state.svg');
-				}
+				this.search_state = 0
+				this.lockedButton = require('@/assets/icons/lock-state.svg');
+				
 			},
 			changeOrder(order){
 				if(this.search != ''){
@@ -131,6 +144,24 @@
 		},
 		mounted(){
 
+			let self = this
+        axios({
+          method: 'post',
+          url: `http://ghostjson.pythonanywhere.com/getsp/`,
+          data: '',
+          headers:{
+            "Authorization" : "Token "+ localStorage.Token
+          }
+        })
+        .then(function(response){
+            self.search_password = JSON.parse(response.data)
+            console.log(self.search_password)
+        })
+        .catch(function(err){
+            console.log("Login Required to save")
+        });
+
+
 
 			this.$root.$on('changePlaylist', (_)=>{
 
@@ -149,6 +180,16 @@
 				this.search = title
 				this.getData()
 			});			
+		},
+		watch: {
+			search_password_entered : function(val){
+				if(val == this.search_password){
+					this.search_state = 1
+					this.lockedButton = require('@/assets/icons/unlocked-state.svg')
+					this.search_password_entered = ''
+					this.searchResults = {}
+				}
+			}
 		}
 	};
 </script>
@@ -162,21 +203,13 @@ div.search{
 	height: inherit;
 }
 
-div.search div.search-block{
+/*div.search div.search-block{
 	height: inherit;
 	display: flex;
 	justify-content: space-around;
 }
 
-div.search div  input{
-	background: #303030;
-	border: none;
-	padding: 5px 10px;
-	font-size: 1.5em;
-	border-radius: 20px;
-	color: #FFF;
-	margin-top: 20px;
-}
+
 
 div.search span.search-button-icon{
 	position: absolute;
@@ -191,14 +224,37 @@ div.search span.lock-button-icon{
 	cursor: pointer;
 }
 
-.search-button, .link-button{
-	width: 25px;
-}
+
 
 .link-button{
 	position: absolute;
 	left: 85%;
 	top: 30px;
+	cursor: pointer;
+}*/
+
+div.search div.search-block{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+div.search div  input{
+	background: #303030;
+	border: none;
+	padding: 2% 8%;
+	font-size: 1.2em;
+	border-radius: 20px;
+	color: #FFF;
+	margin-top: 5%;
+}
+
+.search-button, .link-button{
+	width: 25px;
+	margin-left: 2px;
+	position: relative;
+	left: 10px;
+	top: 5px;
 	cursor: pointer;
 }
 
@@ -280,5 +336,29 @@ div.details{
 	cursor: pointer;
 }
 
+/*@media only screen and (max-width: 1000px){
+	div.search div  input{
+		width: 60%;
+	}
+	div.search span.search-button-icon{
+		position: absolute;
+		right: 22%;
+		top: 28px;
+	}
 
+	div.search span.lock-button-icon{
+		position: absolute;
+		left: 10%;
+		top: 65px;
+		cursor: pointer;
+	}
+	.link-button{
+		position: absolute;
+		left: 20%;
+		top: 65px;
+		cursor: pointer;
+	}
+
+}
+*/
 </style>

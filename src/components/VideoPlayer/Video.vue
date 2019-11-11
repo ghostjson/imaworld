@@ -4,7 +4,7 @@
          :video-id="source"
          :player-vars="attrs" ref="youtube" 
          id="video-player"
-         width="710px;" 
+         class="videoplayer" 
          @playing="playing" 
          @paused="paused" 
          @ended="ended" 
@@ -67,7 +67,7 @@ export default {
                 modestbranding: 1,
                 rel: 0,
                 showinfo: 0,
-                fs: 1,
+                fs: 1
             },
             isPlaying: false,
             playButton: require('@/assets/icons/play-button.svg'),
@@ -177,7 +177,6 @@ export default {
 
 
 
-
 .controls{
     margin-top: 10px;
     margin-bottom: 10px;
@@ -201,5 +200,12 @@ export default {
     left: 0px;
     color: #FFF;
     font-weight: 600;
+}
+
+@media only screen and (max-width: 1000px)
+{
+    .playing-status{
+        display: none;
+    }
 }
 </style>

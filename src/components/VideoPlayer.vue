@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <section id="video-player-panel">
         <div class="video-player">
             <div class="video">
                 <video-window :source="id" :plStatus="isPlaylistChanged"></video-window>
@@ -30,7 +30,7 @@
                 </span>
             </form>
 
-            <div class="playlist">
+            <draggable v-model="playlists[playN].videos" class="playlist" @end="isPlaylistChanged=1">
                 <div class="video-item" v-for="(video,i) in playlists[playN].videos" :key="i">
                     <img :src="video.thumbnail">
                     <div class="video-details">
@@ -45,7 +45,7 @@
                         </div>
                     </div>
                 </div>
-            </div>  
+            </draggable>  
         </div>
     </section>    
 </template>
@@ -54,6 +54,7 @@
 
 import VideoWindow from './VideoPlayer/Video'
 import axios from 'axios'
+import draggable from 'vuedraggable'
 
 export default {
     name: 'video-player',
@@ -105,7 +106,8 @@ export default {
         },
     },
     components: {
-        'video-window' : VideoWindow
+        'video-window' : VideoWindow,
+        draggable,
     },
     created(){
 
@@ -256,6 +258,16 @@ section{
     margin: 0 auto;
 }
 
+/*@media only screen  and (max-width: 1000px){
+    .playlist{
+        width: 91%;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(8, 8.5vw);
+    }
+    .playlist .video-item{
+    }
+}*/
+
 .playlist .video-item{
     width: 122px;
     position: relative;
@@ -344,6 +356,7 @@ section{
     cursor: pointer;
     position: absolute; 
 }
+
 
 
 

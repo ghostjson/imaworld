@@ -39,15 +39,21 @@
 
 
 <style>
-@import url('https://fonts.googleapis.com/css?family=McLaren&display=swap');
+/*@import url('https://fonts.googleapis.com/css?family=McLaren&display=swap');*/
 
 
 
 *{
   margin: 0px;
   padding: 0px;
-  font-family: 'McLaren', cursive;
+  font-family: Arial, sans-serif;
 }
+
+#video-player{
+    width: 710px;
+}
+
+
 
 iframe{
     pointer-events: none;
@@ -63,6 +69,7 @@ a, a:visited, a:active, a:hover{
     text-decoration: none;
     color: black;
 }
+
 footer{
   background: #303030;
   margin-top: 50px;
@@ -75,4 +82,27 @@ footer{
   border-top-right-radius: 20px;
   line-height: 40px;
 }
+/*@media only screen and (max-width: 1000px){
+  #search-section{
+    
+  }
+  #video-player{
+    width: 100%;
+  }
+
+  body{
+    margin: 0 0;
+  }
+
+  section .v{
+    margin-right: 0px;
+    border-radius: 10px;
+    background: #303030;
+    width: 100%;
+  }
+  section .s{
+    width: 33vw;
+  } 
+  
+}*/
 </style>

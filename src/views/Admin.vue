@@ -19,7 +19,7 @@
 			<form class="addfeature" v-on:submit.prevent>
 				<input type="text" name="addfeature" v-model="videolink"><button @click="addVideo()">Add</button>
 			</form>
-			<div class="feature">
+			<draggable class="feature" v-model="featured" @end="saveFeatured">
                 <div class="video-item" v-for="(video,i) in featured" :key="i">
                     <img :src="video.thumbnail">
                     <div class="video-details">
@@ -28,19 +28,32 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </draggable>
 
 
             <h2>Channel Videos</h2>
 			<form class="addfeature" v-on:submit.prevent>
-				<input type="text" name="addfeature" v-model="videolink"><button @click="addChannelVideo()">Add</button>
-				<select class="select-channel" v-model="chanN">
-					<option :value="i"  v-for="(channel,i) in channels" :key="i" >{{channel.name}}</option>
-				</select>
-				<input type="text" name="addChannel" v-model="newChannel"><button @click="addChannel()">Add</button>
-				<button @click="removeChannel()">Remove</button>
+				<span v-if="state==0">
+					<input type="text" name="addfeature" v-model="videolink"><button @click="addChannelVideo()">Add</button>
+					<select class="select-channel" v-model="chanN">
+						<option :value="i"  v-for="(channel,i) in channels" :key="i" >{{channel.name}}</option>
+					</select>
+					<input type="text" name="addChannel" v-model="newChannel"><button @click="addChannel()">Add</button>
+					<button @click="state=1">Remove</button>
+					<button @click="state=2">Rename</button>
+				</span>
+				<span v-if="state==1">
+					Are you sure you want to delete this channel? It is permanent!
+					<button @click="removeChannel();state=0">Yes</button>
+					<button @click="state=0">No</button>
+				</span>
+				<span v-if="state==2">
+					<input type="text" name="renameChannel" v-model="channels[chanN].name">
+					<button @click="saveChannel();state=0">Ok</button>
+					<button @click="state=0">Cancel</button>
+				</span>
 			</form>
-            <div class="feature">
+            <draggable class="feature" v-model="channels[chanN].videos" @end="saveChannel">
                 <div class="video-item" v-for="(video,i) in channels[chanN].videos" :key="i">
                     <img :src="video.thumbnail">
                     <div class="video-details">
@@ -49,7 +62,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </draggable>
 		</div>
 	</div>
 </template>
@@ -58,9 +71,11 @@
 <script>
 
 	import axios from 'axios'
+	import draggable from 'vuedraggable'
 
 	export default{
 		name: 'admin',
+		components: {draggable,},
 		data(){
 			return {
 				admin : 0,
@@ -77,7 +92,8 @@
 					videos: []
 				}],
 				chanN: 0,
-				newChannel: ''
+				newChannel: '',
+				state: 0
 			}
 		},
 		methods:{
@@ -123,12 +139,15 @@
     			return (match&&match[7].length==11)? match[7] : false;
 			},
 			addChannel(){
-				let channel  = {
+				if(this.newChannel != ''){
+					let channel  = {
 			      		name: this.newChannel,
 			      		videos : []
-			   	};
-				this.channels.push(channel)
-				this.newChannel = ''
+				   	};
+					this.channels.push(channel)
+					this.newChannel = ''
+					this.saveChannel()
+				}
 			},
 			addChannelVideo(){
 				let self = this
@@ -282,10 +301,10 @@
 
 .feature{
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(8, 5vw);
-    width: 95%;
-    grid-gap: 30px;
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(8, 6vw);
+    width: 97%;
+    grid-gap: 5px;
     padding: 20px;
     height: 400px;
     background: #535353;
@@ -294,7 +313,7 @@
 }
 
 .feature .video-item{
-    width: 140px;
+    width: 120px;
     position: relative;
 }
 
@@ -311,7 +330,7 @@
   opacity: 1;
   position: absolute;
   left: 125%;
-  top: 15%;
+  top: 8%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   text-align: center;
@@ -325,7 +344,7 @@
     opacity: 1;
 }
 .feature .video-item .video-details div{
-    width: 25px;
+    width: 20px;
     padding-left: 20px;
 }
 .feature .video-item .video-details div img{
