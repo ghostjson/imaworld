@@ -16,6 +16,7 @@
 				</span>
 			</span>
 			<span v-if="search_state==1">
+				<!-- <autocomplete :search="suggest" v-on:keyup.enter="getData" @submit="getData"></autocomplete> -->
 				<input type="text" name="search" v-model="search" :disabled="disabled" placeholder="search here..." v-on:keyup.enter="getData">
 				<span class="search-button-icon" @click="getData" :disabled="disabled"><img class="search-button" :src="require('@/assets/icons/search-button.svg')"></span>
 				<img class="link-button" :src="require('@/assets/icons/link-button.svg')" @click="linkVideo()">
@@ -59,6 +60,11 @@
 <script>
 
 	import axios  from 'axios'
+	import Autocomplete from '@trevoreyre/autocomplete-vue'
+	import yauto from 'youtube-autocomplete'
+	import '@trevoreyre/autocomplete-vue/dist/style.css'
+
+
 
 	export default{
 		data(){
@@ -74,8 +80,12 @@
 				search_password_entered: ''
 			}
 		},
+		components: {
+			Autocomplete,
+			yauto
+		},
 		methods:{
-			getData(){
+			getData(input){
 				if(this.search != ''){
 					axios
 				      .get(`http://ghostjson.pythonanywhere.com/search/?query=${this.search}&quatity=${this.quatity}&orderby=relevance`)
@@ -140,6 +150,17 @@
     			var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
     			var match = url.match(regExp);
     			return (match&&match[7].length==11)? match[7] : false;
+			},
+			suggest(input){
+				this.search = input
+				if(0){
+					return []
+				}
+				else{
+					return new Promise({
+						
+					});
+				}
 			}
 		},
 		mounted(){
@@ -239,7 +260,7 @@ div.search div.search-block{
 	align-items: center;
 }
 
-div.search div  input{
+div.search div  input,.autocomplete-input{
 	background: #303030;
 	border: none;
 	padding: 2% 8%;
