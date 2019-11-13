@@ -176,7 +176,6 @@ export default {
 <style scoped>
 
 
-
 .controls{
     margin-top: 10px;
     margin-bottom: 10px;

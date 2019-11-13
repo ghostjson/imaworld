@@ -17,7 +17,7 @@
 			</span>
 			<span v-if="search_state==1">
 				<!-- <autocomplete :search="suggest" v-on:keyup.enter="getData" @submit="getData"></autocomplete> -->
-				<input type="text" name="search" v-model="search" :disabled="disabled" placeholder="search here..." v-on:keyup.enter="getData">
+				<input class="search-bar" type="text" name="search" v-model="search" :disabled="disabled" placeholder="search here..." v-on:keyup.enter="getData">
 				<span class="search-button-icon" @click="getData" :disabled="disabled"><img class="search-button" :src="require('@/assets/icons/search-button.svg')"></span>
 				<img class="link-button" :src="require('@/assets/icons/link-button.svg')" @click="linkVideo()">
 				<img class="search-button" :src="lockedButton" @click="locksearch">
@@ -260,7 +260,7 @@ div.search div.search-block{
 	align-items: center;
 }
 
-div.search div  input,.autocomplete-input{
+div.search div  input{
 	background: #303030;
 	border: none;
 	padding: 2% 8%;
@@ -268,6 +268,9 @@ div.search div  input,.autocomplete-input{
 	border-radius: 20px;
 	color: #FFF;
 	margin-top: 5%;
+
+	width: 85%;
+
 }
 
 .search-button, .link-button{

@@ -112,8 +112,9 @@ export default {
 <style scoped>
 
 section.content{
+    background: blue;
 	display: grid;
-	grid-template-columns: 5fr 3fr;
+	grid-template-columns: 4fr 3fr;
     margin-bottom: 50px;
     margin-top: 50px;
 }
@@ -126,7 +127,7 @@ section .v{
 	margin-right: 10px;
 	border-radius: 10px;
 	background: #303030;
-    width: 720px;
+    width: inherit;
 }
 
 
