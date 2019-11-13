@@ -50,7 +50,7 @@
 }
 
 #video-player{
-    width: 710px;
+    width: 100%;
 }
 
 
@@ -65,6 +65,11 @@ body{
   margin: 0 50px;
 }
 
+@media (max-width: 900px) {
+  body {
+    margin: 0 0px;
+  }
+}
 a, a:visited, a:active, a:hover{
     text-decoration: none;
     color: black;

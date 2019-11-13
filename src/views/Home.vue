@@ -1,12 +1,15 @@
 <template>
     <div class="home">
+    <div class="searchButton" v-if="window.width < 900" @click="isSearch=true">
+        <img :src="require('@/assets/icons/search-button.svg')">
+    </div>
     <div class="channels dragscroll">
         <div class="channel" @click="playPlaylist">My Playlists</div>
         <div class="channel" v-for="(channel,i) in channels" :key="i" @click="playChannel(i)">{{channel.name}}</div>
     </div>
     <section class="content">
         <videoplayer class="v"></videoplayer>
-        <searchvideo class="s"></searchvideo>
+        <searchvideo class="s" v-if="isSearch || window.width> 900"></searchvideo>
     </section>
         <div>   
             <div class="feature-heading">Feature Videos</div>
@@ -46,13 +49,23 @@ export default {
         return {
             featured: [],
             channels: [],
+            isSearch: false,
+            window: {
+                width: 0,
+                height: 0
+            }
         }
     },
     components: {
         'videoplayer': VideoPlayer,
         'searchvideo': SearchVideo,dragscroll
     },
+    
     methods:{
+        handleResize() {
+            this.window.width = window.innerWidth;
+            this.window.height = window.innerHeight;
+        },
         playVideo(item){
                 console.log(item)
                 this.$root.$emit('play', item.id)
@@ -73,8 +86,12 @@ export default {
         if(!localStorage.hasOwnProperty('Token')){
             this.$router.replace('login')
         }
+      
     },
     mounted(){
+        window.addEventListener('resize', this.handleResize)
+        console.log('hello')
+        this.handleResize();
         let self = this
         axios({
           method: 'post',
@@ -105,16 +122,45 @@ export default {
         .catch(function(err){
             console.log("Login Required to save")
         });
+
+
+        this.$root.$on('closeSearch', ()=>{
+
+            this.isSearch  = false
+        });
+
+       
     }
+  
+
+
 };
 </script>
 
 <style scoped>
 
+.searchButton{
+    background: #303030;
+    width: 40px;
+    height: 40px;
+    padding: 3px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    bottom: 40px;
+    right: 30px;
+    border: 2px solid #8eda3b;
+    z-index: 2;
+}
+.searchButton img{
+    width: 30px;
+
+}
+
 section.content{
-    background: blue;
 	display: grid;
-	grid-template-columns: 4fr 3fr;
+	grid-template-columns: 5fr 3fr;
     margin-bottom: 50px;
     margin-top: 50px;
 }
@@ -127,7 +173,7 @@ section .v{
 	margin-right: 10px;
 	border-radius: 10px;
 	background: #303030;
-    width: inherit;
+    width: 720px;
 }
 
 
@@ -138,6 +184,9 @@ section .s{
 }
 
 
+.close{
+    display: none;
+}
 
 .feature-heading{
     font-size: 1.8em;
@@ -175,7 +224,21 @@ section .s{
     width: 240px;
 }
 
+@media (max-width: 900px){
+    .feature-videos{
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
 
+    .thumbnail{
+        padding: 3px;
+    }
+
+    .thumbnail img{
+        width: 98%;
+    }
+}
+`
 
 .details{
     margin-bottom: 15px;
@@ -200,9 +263,29 @@ section .s{
 
 .channels::before{
     content : '';
-    margin: 0 3%;
+    
 }
 
+@media (min-width: 320px){
+    .channels::before{
+        margin: 0 700px;
+    }
+}
+@media (min-width: 510px){
+    .channels::before{
+        margin: 0 600px;
+    }
+}
+@media (min-width: 750px){
+    .channels::before{
+        margin: 0 480px;
+    }
+}
+@media (min-width: 1000px){
+    .channels::before{
+        margin: 0 240px;
+    }
+}
 .channels .channel{
     background: #8eda3b;
     padding: 10px 40px;
@@ -234,6 +317,29 @@ section .s{
     }
 
 }*/
+@media(max-width: 900px){
+    section.content{
+        display: block;
+    }
+    section .v{
+        width: 100%;
+        /*margin: 0px;*/
+    }
+
+    section .s{
+        display: block;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+    }
+
+}
+
+@media (min-width: 900px){
+    .searchButton{
+      display: none;
+    }
+  }
 </style>
 
 <style>

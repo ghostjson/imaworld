@@ -7,7 +7,7 @@
          class="videoplayer" 
          @playing="playing" 
          @paused="paused" 
-         @ended="ended" 
+         @ended="ended"
          >
         </youtube>
 

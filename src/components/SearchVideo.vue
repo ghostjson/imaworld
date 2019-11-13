@@ -1,5 +1,6 @@
 <template>
-	<div class="search" id="search-section">
+	<div class="search" id="search-section" :class="isSearch">
+		<img :src="require('@/assets/icons/close.svg')" class="close-button" @click="closeSearch">
 		<!-- <div class="search-block">
 			<span class="lock-button-icon" @click="locksearch">
 				<img class="search-button" :src="lockedButton">
@@ -17,7 +18,7 @@
 			</span>
 			<span v-if="search_state==1">
 				<!-- <autocomplete :search="suggest" v-on:keyup.enter="getData" @submit="getData"></autocomplete> -->
-				<input class="search-bar" type="text" name="search" v-model="search" :disabled="disabled" placeholder="search here..." v-on:keyup.enter="getData">
+				<input class="" type="text" name="search" v-model="search" :disabled="disabled" placeholder="search here..." v-on:keyup.enter="getData">
 				<span class="search-button-icon" @click="getData" :disabled="disabled"><img class="search-button" :src="require('@/assets/icons/search-button.svg')"></span>
 				<img class="link-button" :src="require('@/assets/icons/link-button.svg')" @click="linkVideo()">
 				<img class="search-button" :src="lockedButton" @click="locksearch">
@@ -77,7 +78,8 @@
 				lockedButton: require('@/assets/icons/lock-state.svg'),
 				search_password: '',
 				search_state: 0,
-				search_password_entered: ''
+				search_password_entered: '',
+				isSearch: 'search-show'
 			}
 		},
 		components: {
@@ -161,6 +163,9 @@
 						
 					});
 				}
+			},
+			closeSearch(){
+				this.$root.$emit('closeSearch')
 			}
 		},
 		mounted(){
@@ -224,6 +229,8 @@ div.search{
 	height: inherit;
 }
 
+
+
 /*div.search div.search-block{
 	height: inherit;
 	display: flex;
@@ -263,13 +270,12 @@ div.search div.search-block{
 div.search div  input{
 	background: #303030;
 	border: none;
-	padding: 2% 8%;
+	padding: 3% 10%;
 	font-size: 1.2em;
 	border-radius: 20px;
 	color: #FFF;
 	margin-top: 5%;
-
-	width: 85%;
+	width: 50%;
 
 }
 
@@ -358,6 +364,32 @@ div.details{
 
 .orderby span{
 	cursor: pointer;
+}
+
+.close-button{
+	width: 30px;
+	position: absolute;
+	right: 3px;
+	top: 12px;
+	display: none;
+}
+
+@media (max-width: 900px){
+	.close-button{
+		display: block;
+	}
+
+	div.search div  input{
+	background: #303030;
+	border: none;
+	padding: 2px 5px;
+	font-size: 1.2em;
+	border-radius: 20px;
+	color: #FFF;
+	margin-top: 5%;
+	width: 50%;
+
+}
 }
 
 /*@media only screen and (max-width: 1000px){

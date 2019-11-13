@@ -237,6 +237,7 @@ section{
     padding-left: 30px;
 }
 
+
 .video-player{
     display: flex;
     flex-direction: column;
@@ -257,6 +258,7 @@ section{
     overflow-y: auto;
     margin: 0 auto;
 }
+
 
 /*@media only screen  and (max-width: 1000px){
     .playlist{
@@ -357,6 +359,27 @@ section{
     position: absolute; 
 }
 
+@media (max-width: 900px){
+    section{
+        padding: 0px;
+    }
+
+    .playlist{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        flex-basis:calc(50% - 10px);
+        align-items: flex-start;
+        /*justify-content: center;*/
+        /*align-items: center;*/
+        /*flex-direction: row;*/
+        padding: 5px;
+    }
+    .video-item{
+        margin-right: 5px;
+        
+    }
+}
 
 
 
