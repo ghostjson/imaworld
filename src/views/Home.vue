@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-    <div class="searchButton" v-if="window.width < 900" @click="isSearch=true">
+    <div class="searchButton" v-if="window.width < 900 && isSearch==false" @click="isSearch=true">
         <img :src="require('@/assets/icons/search-button.svg')">
     </div>
     <div class="channels dragscroll">
@@ -259,6 +259,12 @@ section .s{
     margin-top: 12px;
     overflow-x: hidden;
     cursor: pointer;
+}
+
+@media (max-width: 900px){
+    .channels{
+        overflow-x: auto;
+    }
 }
 
 .channels::before{
