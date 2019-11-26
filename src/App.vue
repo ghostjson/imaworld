@@ -57,12 +57,13 @@
 
 iframe{
     pointer-events: none;
+    height: 250px;
 }
 input:focus{
   outline: none;
 }
 body{
-  margin: 0 50px;
+  margin: 0 150px;
 }
 
 @media (max-width: 900px) {

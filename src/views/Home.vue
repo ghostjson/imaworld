@@ -9,7 +9,7 @@
     </div>
     <section class="content">
         <videoplayer class="v"></videoplayer>
-        <searchvideo class="s" v-if="isSearch || window.width> 900"></searchvideo>
+        <searchvideo class="s" v-if="isSearch || window.width> 900" ></searchvideo>
     </section>
         <div>   
             <div class="feature-heading">Feature Videos</div>
@@ -146,7 +146,7 @@ export default {
     padding: 3px;
     border-radius: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     position: fixed;
     bottom: 40px;
     right: 30px;
@@ -160,9 +160,10 @@ export default {
 
 section.content{
 	display: grid;
-	grid-template-columns: 5fr 3fr;
+	grid-template-columns: 5fr 6fr;
     margin-bottom: 50px;
-    margin-top: 50px;
+    margin-top: 10px;
+    height: 800px;
 }
 
 .home{
@@ -173,7 +174,8 @@ section .v{
 	margin-right: 10px;
 	border-radius: 10px;
 	background: #303030;
-    width: 720px;
+    width: 420px;
+    height: 81%;
 }
 
 
@@ -293,7 +295,7 @@ section .s{
     }
 }
 .channels .channel{
-    background: #8eda3b;
+    background: rgb(169,196,220);
     padding: 10px 40px;
     margin: 0 5px;
     border-radius: 20px;
@@ -305,6 +307,26 @@ section .s{
     vertical-align: center;
     white-space: nowrap;
     transition: color 0.5s;
+}
+
+.channels .channel:nth-child(4n){
+    background: linear-gradient(180deg, rgba(169,196,220,1) 0%, rgba(131,173,212,1) 36%, rgba(187,228,250,1) 72%);
+}
+
+.channels .channel:nth-child(4n+1){
+    background: rgb(198,239,255);
+background: linear-gradient(0deg, rgba(198,239,255,1) 0%, rgba(134,180,228,1) 69%, rgba(0,68,143,1) 100%);
+}
+
+.channels .channel:nth-child(4n+2){
+    background: rgb(202,202,202);
+    background: linear-gradient(180deg, rgba(202,202,202,1) 0%, rgba(140,140,140,1) 25%, rgba(224,224,224,1) 72%);
+}
+
+.channels .channel:nth-child(4n+3){
+    background: rgb(175,246,196);
+    background: linear-gradient(180deg, rgba(175,246,196,1) 0%, rgba(129,223,234,1) 25%, rgba(129,234,210,1) 72%);
+
 }
 
 .channels .channel:hover{

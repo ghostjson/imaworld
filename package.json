@@ -13,6 +13,7 @@
     "core-js": "^2.6.5",
     "dragscroll": "0.0.8",
     "minibarjs": "^0.4.2",
+    "suggestion": "^2.1.2",
     "vue": "^2.6.10",
     "vue-router": "^3.1.3",
     "vue-youtube": "^1.4.0",

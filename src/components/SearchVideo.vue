@@ -11,14 +11,16 @@
 		</div> -->
 		<div class="search-block">
 			<span v-if="search_state==0">
-				<input type="text" name="search" v-model="search_password_entered" placeholder="Enter Password To unlock">
+				<input type="password" name="search" v-model="search_password_entered" placeholder="Enter Password To unlock">
 				<span class="lock-button-icon">
 					<img class="search-button" :src="lockedButton">
 				</span>
 			</span>
 			<span v-if="search_state==1">
-				<!-- <autocomplete :search="suggest" v-on:keyup.enter="getData" @submit="getData"></autocomplete> -->
-				<input class="" type="text" name="search" v-model="search" :disabled="disabled" placeholder="search here..." v-on:keyup.enter="getData">
+				<autocomplete :search="suggest" v-on:keyup.enter="getData" @submit="getData"></autocomplete>
+				<div>
+					<!-- <input class="" type="text" name="search" v-model="search" :disabled="disabled" placeholder="search here..." v-on:keyup.enter="getData"> -->
+				</div>
 				<span class="search-button-icon" @click="getData" :disabled="disabled"><img class="search-button" :src="require('@/assets/icons/search-button.svg')"></span>
 				<img class="link-button" :src="require('@/assets/icons/link-button.svg')" @click="linkVideo()">
 				<img class="search-button" :src="lockedButton" @click="locksearch">
@@ -64,7 +66,7 @@
 	import Autocomplete from '@trevoreyre/autocomplete-vue'
 	import yauto from 'youtube-autocomplete'
 	import '@trevoreyre/autocomplete-vue/dist/style.css'
-
+	import suggest from  'suggestion'
 
 
 	export default{
@@ -79,9 +81,11 @@
 				search_password: '',
 				search_state: 0,
 				search_password_entered: '',
-				isSearch: 'search-show'
+				isSearch: 'search-show',
+				suggestions: []
 			}
-		},
+		}
+		,
 		components: {
 			Autocomplete,
 			yauto
@@ -91,7 +95,9 @@
 				if(this.search != ''){
 					axios
 				      .get(`http://ghostjson.pythonanywhere.com/search/?query=${this.search}&quatity=${this.quatity}&orderby=relevance`)
-				      .then(response => (this.searchResults = response))			
+				      .then(response => {
+				      	this.searchResults = response
+				      })	
 
 				    this.isShowMore = true	
 				}
@@ -108,6 +114,15 @@
 				this.$root.$emit('play', item.id.videoId)
 			},
 			addtoPlaylist(item){
+				console.log(this.searchResults)
+
+
+				for( var i = 0; i < this.searchResults.data.length; i++){ 
+				console.log('List id: '+ this.searchResults.data[i].id + '  ' + 'video id: '+ item.id.videoId)
+				   if ( this.searchResults.data[i].id.videoId == item.id.videoId) {
+				    	this.searchResults.data.splice(i, 1); 
+				   }
+				}
 
 				let video = {
 					'id': item.id.videoId,
@@ -159,9 +174,15 @@
 					return []
 				}
 				else{
-					return new Promise({
-						
-					});
+					if(input != ''){
+
+						return new Promise(resolve=>{
+							suggest(input,{client: 'youtube'} ,function (err, suggestions) {
+							  if (err) throw err;
+							  resolve(suggestions);
+							});
+						})
+					}
 				}
 			},
 			closeSearch(){
@@ -226,10 +247,17 @@ div.search{
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	height: inherit;
+	height: 81%;
 }
 
+.suggest ul{
+	list-style: none;
+	font-size: 1.1em;
+	background: white;
+	position: absolute;
+	width: 180px;
 
+}
 
 /*div.search div.search-block{
 	height: inherit;
@@ -275,7 +303,7 @@ div.search div  input{
 	border-radius: 20px;
 	color: #FFF;
 	margin-top: 5%;
-	width: 50%;
+	width: 80%;
 
 }
 

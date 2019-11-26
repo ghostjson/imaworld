@@ -40,9 +40,9 @@
             <span id="video-full" class="control" @click="fullscreen">
                 <img :src="require('@/assets/icons/fullscreen-button.svg')">
             </span>
-            <span class="playing-status">
+            <!-- <span class="playing-status">
                 Playing: <span>{{current_playing}}</span>
-            </span>
+            </span> -->
             
         </div>
     </div>

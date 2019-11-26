@@ -137,11 +137,12 @@ export default {
                 }
             }
             if(add){
-                console.log(this.playlists[this.playN].videos)
                 this.playlists[this.playN].videos.push(video);
                 this.isPlaylistChanged = 1;
             }
         });
+
+        
 
         this.$root.$on('savePlaylist', ()=>{
 
@@ -248,11 +249,11 @@ section{
 
 .playlist{
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(8, 5vw);
     width: 95%;
     grid-gap: 12px;
-    padding: 20px;
+    padding: 10px;
     height: 400px;
     background: #535353;
     overflow-y: auto;
