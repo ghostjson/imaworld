@@ -82,6 +82,7 @@ export default {
             this.$root.$emit('changePlaylist', 'My Playlists')
         }
     },
+    
     created(){
         if(!localStorage.hasOwnProperty('Token')){
             this.$router.replace('login')
@@ -163,7 +164,10 @@ section.content{
 	grid-template-columns: 5fr 6fr;
     margin-bottom: 50px;
     margin-top: 10px;
-    height: 800px;
+    /*margin-left: 130px;*/
+    /* height: 600px; */
+    margin-left: 11%;
+    margin-right: 1%;
 }
 
 .home{
@@ -175,7 +179,7 @@ section .v{
 	border-radius: 10px;
 	background: #303030;
     width: 420px;
-    height: 81%;
+    height: 100%;
 }
 
 
@@ -183,6 +187,7 @@ section .s{
     background: #535353;
     border-radius: 10px;
     margin-bottom: 30px;
+    width: 75%;
 }
 
 
@@ -254,13 +259,16 @@ section .s{
 }
 
 .channels{
-    width: 100%;
+    width: 55%;
     display: flex;
     margin: 0 auto;
     justify-content: space-around;
     margin-top: 12px;
     overflow-x: hidden;
     cursor: pointer;
+    position: absolute;
+    top: 5px;
+    right: 340px;
 }
 
 @media (max-width: 900px){
@@ -276,25 +284,26 @@ section .s{
 
 @media (min-width: 320px){
     .channels::before{
-        margin: 0 700px;
+        margin: 0 250px;
     }
 }
 @media (min-width: 510px){
     .channels::before{
-        margin: 0 600px;
+        margin: 0 100px;
     }
 }
 @media (min-width: 750px){
     .channels::before{
-        margin: 0 480px;
+        margin: 0 50px;
     }
+
 }
 @media (min-width: 1000px){
     .channels::before{
-        margin: 0 240px;
+        margin: 0 60px;
     }
 }
-.channels .channel{
+/*.channels .channel{
     background: rgb(169,196,220);
     padding: 10px 40px;
     margin: 0 5px;
@@ -308,8 +317,8 @@ section .s{
     white-space: nowrap;
     transition: color 0.5s;
 }
-
-.channels .channel:nth-child(4n){
+*/
+/*.channels .channel:nth-child(4n){
     background: linear-gradient(180deg, rgba(169,196,220,1) 0%, rgba(131,173,212,1) 36%, rgba(187,228,250,1) 72%);
 }
 
@@ -327,10 +336,45 @@ background: linear-gradient(0deg, rgba(198,239,255,1) 0%, rgba(134,180,228,1) 69
     background: rgb(175,246,196);
     background: linear-gradient(180deg, rgba(175,246,196,1) 0%, rgba(129,223,234,1) 25%, rgba(129,234,210,1) 72%);
 
+}*/
+
+.channels .channel{
+    background: rgb(169,196,220);
+    padding: 10px 40px;
+    margin: 0 5px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: bolder;
+    cursor: pointer;
+    text-align: center;
+    vertical-align: center;
+    white-space: nowrap;
+    transition: color 0.5s;
+    background: linear-gradient(180deg, rgba(255,211,204,1) 0%, rgba(242,129,95,1) 29%, rgba(238,107,53,1) 54%, rgba(247,129,42,1) 88%);
+    color: #FFF;
+    text-transform: uppercase;
+    border: 3px solid;
+    
+    border-image-slice: 1;
+    border: 3px solid #2f2f2f70;
 }
 
+.channels .channel:nth-child(4n){
+    /*background: linear-gradient(180deg, rgba(210,212,224,1) 7%, rgba(164,132,135,1) 44%, rgba(236,233,228,1) 88%);*/
+}
+.channels .channel:nth-child(4n+1){
+    background: linear-gradient(180deg, rgba(254,235,220,1) 14%, rgba(250,166,42,1) 39%, rgba(250,171,18,1) 53%, rgba(251,172,17,1) 66%, rgba(253,194,12,1) 88%);
+}
+.channels .channel:nth-child(4n+2){
+    background: linear-gradient(180deg, rgba(194,218,196,1) 14%, rgba(100,183,75,1) 39%, rgba(100,183,75,1) 53%, rgba(91,190,22,1) 66%, rgba(135,203,28,1) 88%);
+}
+.channels .channel:nth-child(4n+3){
+    background: linear-gradient(180deg, rgba(196,204,217,1) 14%, rgba(102,144,184,1) 39%, rgba(46,124,173,1) 53%, rgba(48,131,183,1) 66%, rgba(111,190,223,1) 88%);
+}
+
+
 .channels .channel:hover{
-    color: black;
+    color: #303030;
 }
 
 /*@media only screen and (max-width: 1000px){
@@ -348,6 +392,7 @@ background: linear-gradient(0deg, rgba(198,239,255,1) 0%, rgba(134,180,228,1) 69
 @media(max-width: 900px){
     section.content{
         display: block;
+        margin-left: 0px;
     }
     section .v{
         width: 100%;
@@ -359,6 +404,13 @@ background: linear-gradient(0deg, rgba(198,239,255,1) 0%, rgba(134,180,228,1) 69
         position: absolute;
         top: 0px;
         right: 0px;
+    }
+
+    .channels{
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 100%;
     }
 
 }

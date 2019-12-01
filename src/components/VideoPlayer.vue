@@ -254,7 +254,7 @@ section{
     width: 95%;
     grid-gap: 12px;
     padding: 10px;
-    height: 400px;
+    height: 220px;
     background: #535353;
     overflow-y: auto;
     margin: 0 auto;

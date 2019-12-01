@@ -38,7 +38,7 @@
             			<img :src="item.snippet.thumbnails.medium.url">
         			</div>
 	        		<div class="details">
-	            		<div class="heading">{{item.snippet.title}}</div>
+	            		<div class="heading">{{item.snippet.title | requotes }}</div>
 		            	<div id="icon-pack">
 			                <span class="icons" @click="playVideo(item)">
 			                    <img :src="require('@/assets/icons/play-button.svg')">
@@ -90,6 +90,14 @@
 			Autocomplete,
 			yauto
 		},
+		filters:{
+       	 requotes(val) {
+       	     let res = val.replace("&quot;", "\"")
+       	     res = res.replace("&#39;", "'")
+       	     res = res.replace("&amp;", "&")
+         	   return res
+        	}
+    	},
 		methods:{
 			getData(input){
 				if(this.search != ''){
@@ -243,11 +251,12 @@
 
 <style scoped>
 
+
 div.search{
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	height: 81%;
+	height: 100%;
 }
 
 .suggest ul{
@@ -324,7 +333,7 @@ div.details{
 .search-results{
     width: 100%;
     margin-top: 30px;
-    height: 855px;
+    height: 485px;
     overflow: auto;
 }
 .search-results 
