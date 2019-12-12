@@ -65,7 +65,7 @@ input:focus{
   outline: none;
 }
 body{
-  margin: 0 150px;
+  margin: 0 120px;
 }
 
 @media (max-width: 900px) {

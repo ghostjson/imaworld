@@ -21,8 +21,8 @@
 				<div>
 					<!-- <input class="" type="text" name="search" v-model="search" :disabled="disabled" placeholder="search here..." v-on:keyup.enter="getData"> -->
 				</div>
-				<span class="search-button-icon" @click="getData" :disabled="disabled"><img class="search-button" :src="require('@/assets/icons/search-button.svg')"></span>
-				<img class="link-button" :src="require('@/assets/icons/link-button.svg')" @click="linkVideo()">
+				<span class="search-button-icon"  v-if="search==''" @click="getData" :disabled="disabled"><img class="search-button" :src="require('@/assets/icons/search-button.svg')"></span>
+				<!-- <img class="link-button" :src="require('@/assets/icons/link-button.svg')" @click="linkVideo()"> -->
 				<img class="search-button" :src="lockedButton" @click="locksearch">
 			</span>
 		</div>
@@ -101,6 +101,7 @@
 		methods:{
 			getData(input){
 				if(this.search != ''){
+					
 					axios
 				      .get(`http://ghostjson.pythonanywhere.com/search/?query=${this.search}&quatity=${this.quatity}&orderby=relevance`)
 				      .then(response => {
@@ -268,6 +269,12 @@ div.search{
 
 }
 
+
+div.search span.search-button-icon{
+	position: relative;
+	bottom: 35px;
+}
+
 /*div.search div.search-block{
 	height: inherit;
 	display: flex;
@@ -332,7 +339,7 @@ div.details{
 
 .search-results{
     width: 100%;
-    margin-top: 30px;
+    /* margin-top: 10px; */
     height: 485px;
     overflow: auto;
 }
@@ -341,8 +348,8 @@ div.details{
 	background: #72da21;	
     display: flex;
     padding: 5px;
-    height: 88px;
-    margin-top: 15px;
+    height: 60px;
+    margin-top: 8px;
 }
 
 .details{
@@ -359,7 +366,7 @@ div.details{
 .search-results 
 .search-results-block
 .thumbnail img{
-    width: 150px;
+    width: 100px;
 }
 
 

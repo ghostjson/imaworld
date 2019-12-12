@@ -62,12 +62,12 @@ header .routes{
 }
 
 header .routes div{
-    margin: 0 20px;
+    margin: 0 10px;
     line-height: 70px;
 }
 
 *{
-    font-family: 'McLaren', cursive;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 

@@ -4,8 +4,10 @@
         <img :src="require('@/assets/icons/search-button.svg')">
     </div>
     <div class="channels dragscroll">
-        <div class="channel" @click="playPlaylist">My Playlists</div>
-        <div class="channel" v-for="(channel,i) in channels" :key="i" @click="playChannel(i)">{{channel.name}}</div>
+        <div class="channel-container">
+            <div class="channel" @click="playPlaylist">My Playlists</div>
+            <div class="channel" v-for="(channel,i) in channels" :key="i" @click="playChannel(i)">{{channel.name}}</div>
+        </div>
     </div>
     <section class="content">
         <videoplayer class="v"></videoplayer>
@@ -214,8 +216,8 @@ section .s{
 .feature-videos{
     margin-top: 20px;
     display: grid;
-    grid-template-columns: repeat(5,1fr);
-    grid-gap: 5px;
+    grid-template-columns: repeat(7,1fr);
+    grid-gap: 20px;
 }
 
 /*@media only screen and (max-width: 1000px){
@@ -228,7 +230,7 @@ section .s{
 }*/
 
 .thumbnail img{
-    width: 240px;
+    width: 150px;
 }
 
 @media (max-width: 900px){
@@ -269,6 +271,11 @@ section .s{
     position: absolute;
     top: 5px;
     right: 340px;
+}
+
+.channels .channel-container{
+    display: flex;
+    width: 100%;
 }
 
 @media (max-width: 900px){
@@ -341,7 +348,7 @@ background: linear-gradient(0deg, rgba(198,239,255,1) 0%, rgba(134,180,228,1) 69
 .channels .channel{
     background: rgb(169,196,220);
     padding: 10px 40px;
-    margin: 0 5px;
+    margin: 0 15px;
     border-radius: 20px;
     font-size: 0.8em;
     font-weight: bolder;
