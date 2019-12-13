@@ -84,6 +84,17 @@ export default {
             this.$root.$emit('changePlaylist', 'My Playlists')
         }
     },
+    watch: {
+        isSearch: function(val){
+
+            if(val){
+                this.$root.$emit('isSearch', true)
+            }else{
+                this.$root.$emit('isSearch', false)
+            }
+        }
+    }
+    ,
     
     created(){
         if(!localStorage.hasOwnProperty('Token')){
@@ -247,7 +258,7 @@ section .s{
         width: 98%;
     }
 }
-`
+
 
 .details{
     margin-bottom: 15px;
@@ -366,9 +377,9 @@ background: linear-gradient(0deg, rgba(198,239,255,1) 0%, rgba(134,180,228,1) 69
     border: 3px solid #2f2f2f70;
 }
 
-.channels .channel:nth-child(4n){
+/* .channels .channel:nth-child(4n){ */
     /*background: linear-gradient(180deg, rgba(210,212,224,1) 7%, rgba(164,132,135,1) 44%, rgba(236,233,228,1) 88%);*/
-}
+/* } */
 .channels .channel:nth-child(4n+1){
     background: linear-gradient(180deg, rgba(254,235,220,1) 14%, rgba(250,166,42,1) 39%, rgba(250,171,18,1) 53%, rgba(251,172,17,1) 66%, rgba(253,194,12,1) 88%);
 }
@@ -408,9 +419,12 @@ background: linear-gradient(0deg, rgba(198,239,255,1) 0%, rgba(134,180,228,1) 69
 
     section .s{
         display: block;
-        position: absolute;
+        position: fixed;
         top: 0px;
         right: 0px;
+        height: 60vh;
+        width: 100%;
+        border-radius: 0px;
     }
 
     .channels{

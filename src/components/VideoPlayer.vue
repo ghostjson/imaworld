@@ -30,6 +30,7 @@
                 </span>
             </form>
 
+
             <draggable v-model="playlists[playN].videos" class="playlist" @end="isPlaylistChanged=1">
                 <div class="video-item" v-for="(video,i) in playlists[playN].videos" :key="i">
                     <img :src="video.thumbnail">
@@ -45,7 +46,29 @@
                         </div>
                     </div>
                 </div>
-            </draggable>  
+            </draggable>
+
+            <div class="playlist-highlight" v-if="playlistHighlight">
+                <div class="heading">
+                    <h3>Playlist</h3>
+                </div>
+                <draggable v-model="playlists[playN].videos" class="playlist" @end="isPlaylistChanged=1">
+                    <div class="video-item" v-for="(video,i) in playlists[playN].videos" :key="i">
+                        <img :src="video.thumbnail">
+                        <div class="video-details">
+                            <div class="play" @click="playVideo(video)">
+                                <img :src="require('@/assets/icons/play-button.svg')">
+                            </div>
+                            <div class="remove" v-on:click="removeFromPlaylist(i)" v-if="!disabled">
+                                <img :src="require('@/assets/icons/remove-button.svg')">
+                            </div>
+                            <div class="search" @click="searchVideo(video.title)" v-if="!disabled">
+                                <img :src="require('@/assets/icons/search-button.svg')">
+                            </div>
+                        </div>
+                    </div>
+                </draggable>
+            </div>
         </div>
     </section>    
 </template>
@@ -68,6 +91,7 @@ export default {
             playN: 0,
             addPlaylist: 0,
             playlistname: '',
+            playlistHighlight: false,
         }
     },
     methods: {
@@ -198,6 +222,10 @@ export default {
             this.currentPlay = 0
             this.disabled = true
         });
+
+        this.$root.$on('isSearch', (state)=>{
+            this.playlistHighlight = state
+        })
 
         this.$root.$on('changePlaylist', (_)=>{
 
@@ -354,6 +382,8 @@ section{
     color: #FFF;
 }
 
+
+
 .remove-icon{
     width: 28px;
     margin-left: 40px;
@@ -373,17 +403,55 @@ section{
         justify-content: flex-start;
         flex-basis:calc(50% - 10px);
         align-items: flex-start;
-        /*justify-content: center;*/
-        /*align-items: center;*/
-        /*flex-direction: row;*/
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
         padding: 5px;
     }
     .video-item{
         margin-right: 5px;
-        
+    }
+    .playlist-highlight .playlist{
+        width: 100%;
+        padding: 0px;
+        padding-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(4, 60px);
+        grid-gap: 0px;
+    }
+
+    .playlist-highlight .playlist .video-item{
+        width: 80px;
+        padding-left: 20px;
+
+    }
+
+    .playlist-highlight .playlist .video-item .video-details{
+        /* top:  */
     }
 }
 
+@media (min-width:901px){
+    .playlist-highlight{
+        display: none;
+    }
+}
+.playlist-highlight{
+    position: fixed;
+    top: 60%;
+    height: 40vh;
+    width: 100%;
+}
 
+.playlist-highlight .playlist{
+    width: 100%;
+    height: 85%;
+}
+
+.playlist-highlight .heading{
+    background: #303030;
+    color: #FFF;
+}
 
 </style>

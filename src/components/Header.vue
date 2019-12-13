@@ -52,6 +52,12 @@ header{
     border-bottom: 1px solid #32313142;
 }
 
+@media (max-width: 900px){
+    header{
+        font-size: 1em;
+    }
+}
+
 header img{
     width: 100px;
     line-height: 70px;

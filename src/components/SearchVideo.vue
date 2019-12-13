@@ -10,8 +10,9 @@
 			<img class="link-button" :src="require('@/assets/icons/link-button.svg')" @click="linkVideo()"></span>
 		</div> -->
 		<div class="search-block">
+			
 			<span v-if="search_state==0">
-				<input type="password" name="search" v-model="search_password_entered" placeholder="Enter Password To unlock">
+				<input type="password" name="search" class="password-field" v-model="search_password_entered" placeholder="Enter Password To unlock">
 				<span class="lock-button-icon">
 					<img class="search-button" :src="lockedButton">
 				</span>
@@ -305,6 +306,7 @@ div.search span.lock-button-icon{
 	cursor: pointer;
 }*/
 
+
 div.search div.search-block{
 	display: flex;
 	justify-content: center;
@@ -343,14 +345,23 @@ div.details{
     height: 485px;
     overflow: auto;
 }
+
+@media (max-width: 900px){
+	.search-results{
+		height: 40vh;
+	}
+}
+
 .search-results 
 .search-results-block{
 	background: #72da21;	
     display: flex;
     padding: 5px;
     height: 60px;
-    margin-top: 8px;
+    margin-top: 4px;
 }
+
+
 
 .details{
     margin: 3px;
@@ -377,6 +388,28 @@ div.details{
 }
 #icon-pack{
 	height: 20px ;
+}
+
+@media (max-width: 900px){
+	.search-results 
+	.search-results-block{
+		height: 50px;
+	}
+
+	.search-results 
+	.search-results-block
+	.thumbnail img{
+		width: 80px;
+	}
+
+	.icons img{
+    	width: 15px;
+		padding-left: 8px;
+	}
+	#icon-pack{
+		height: 10px;
+	}
+
 }
 
 .show-more{
@@ -424,16 +457,16 @@ div.details{
 	}
 
 	div.search div  input{
-	background: #303030;
-	border: none;
-	padding: 2px 5px;
-	font-size: 1.2em;
-	border-radius: 20px;
-	color: #FFF;
-	margin-top: 5%;
-	width: 50%;
+		background: #303030;
+		border: none;
+		padding: 2px 5px;
+		font-size: 1.2em;
+		border-radius: 20px;
+		color: #FFF;
+		margin-top: 5%;
+		width: 90%;
 
-}
+	}
 }
 
 /*@media only screen and (max-width: 1000px){

@@ -34,13 +34,19 @@
             <h2>Channel Videos</h2>
 			<form class="addfeature" v-on:submit.prevent>
 				<span v-if="state==0">
-					<input type="text" name="addfeature" v-model="videolink"><button @click="addChannelVideo()">Add</button>
+					<input type="text" placeholder="Paste URL here" name="addfeature" v-model="videolink"><button @click="addChannelVideo()">Add</button>
 					<select class="select-channel" v-model="chanN">
 						<option :value="i"  v-for="(channel,i) in channels" :key="i" >{{channel.name}}</option>
 					</select>
-					<input type="text" name="addChannel" v-model="newChannel"><button @click="addChannel()">Add</button>
+					<input type="text" placeholder="new channel name here" name="addChannel" v-model="newChannel"><button @click="addChannel()">Add</button>
 					<button @click="state=1">Remove</button>
 					<button @click="state=2">Rename</button>
+					<span v-if="publish==0">
+						<button @click="withhold" class="withhold-btn">Withhold</button>
+					</span>
+					<span v-else>
+						<button @click="publish" class="publish-btn">Publish</button>
+					</span>
 				</span>
 				<span v-if="state==1">
 					Are you sure you want to delete this channel? It is permanent!
@@ -93,7 +99,8 @@
 				}],
 				chanN: 0,
 				newChannel: '',
-				state: 0
+				state: 0,
+				publish: 1
 			}
 		},
 		methods:{
@@ -297,6 +304,10 @@
 .select-channel{
 	padding: 4px 5px;
 	margin-left: 5px;
+}
+
+.publish-btn{
+	padding: 5px 10px;
 }
 
 .feature{
