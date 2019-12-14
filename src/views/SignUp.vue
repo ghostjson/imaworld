@@ -9,7 +9,9 @@
 					<input type="text" name="username" v-model="username" placeholder="Username"><br>
 					<input type="text" v-model="email" placeholder="Email"><br>
 					<input type="password" v-model="password" placeholder="Password"><br>
+					<input type="password" v-model="confirm_password" placeholder="Confirm Password"><br>
 					<input type="text" v-model="search_password" placeholder="Search Password"><br>
+					<input type="password" v-model="confirm_search_password" placeholder="Confirm Search Password"><br>
 					<button v-on:click="login">Submit</button>
 
 				</form>
@@ -32,9 +34,11 @@ export default {
 		return {
 			username: '',
 			password: '',
+			confirm_password: '',
 			email:'',
 			message: '',
-			search_password: ''
+			search_password: '',
+			confirm_search_password: ''
 		}
 
 	},
@@ -44,39 +48,48 @@ export default {
 			if(this.username != '' && this.password != '' && this.search_password != ''){
 				let self = this
 
-				try{
 
-					console.log({
-					  	'username':this.username,
-					  	'password':this.password,
-					  	'email': this.email
-					  });
+				if(this.password == this.search_password && this.search_password == this.confirm_search_password){
 
-					axios({
-				
-					  method: 'post',
-					  url: `https://imaworld-backend.herokuapp.com/register/`,
-					  data: {
-					  	'username':this.username,
-					  	'password':this.password,
-					  	'email': this.email,
-					  	'search_password' : this.search_password
-					  },
-					})
-					.then(function (response){
-						localStorage.setItem("Token",response.data)
-						self.$root.$emit('login', true)
-						window.location.href = '/'
-					})
+					try{
 
-					.catch(function(err){
+						console.log({
+							'username':this.username,
+							'password':this.password,
+							'email': this.email
+						});
+
+						axios({
+					
+						method: 'post',
+						url: `https://imaworld-backend.herokuapp.com/register/`,
+						data: {
+							'username':this.username,
+							'password':this.password,
+							'email': this.email,
+							'search_password' : this.search_password
+						},
+						})
+						.then(function (response){
+							localStorage.setItem("Token",response.data)
+							self.$root.$emit('login', true)
+							window.location.href = '/'
+						})
+
+						.catch(function(err){
+							console.log(err)
+							self.message = "Username is already exist"
+						});
+					}catch(err){
 						console.log(err)
-						self.message = "Username is already exist"
-					});
-				}catch(err){
-					console.log(err)
-					self.message = "Server Error"
+						self.message = "Server Error"
+					}
+
+				}else{
+					this.message = "Password is not matching"
 				}
+
+				
 				
 			}else{
 				this.message = "All inputs are mantatory"
