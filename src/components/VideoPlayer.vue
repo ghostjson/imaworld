@@ -172,7 +172,7 @@ export default {
 
             axios({
               method: 'post',
-              url: `http://ghostjson.pythonanywhere.com/save/`,
+              url: `https://imaworld-backend.herokuapp.com/save/`,
               data: self.playlists,
               headers:{
                 "Authorization" : "Token "+ localStorage.Token
@@ -188,7 +188,7 @@ export default {
 
         axios({
           method: 'post',
-          url: `http://ghostjson.pythonanywhere.com/playlist/`,
+          url: `https://imaworld-backend.herokuapp.com/playlist/`,
           data: '',
           headers:{
             "Authorization" : "Token "+ localStorage.Token
@@ -238,7 +238,7 @@ export default {
             let self = this
             axios({
               method: 'post',
-              url: `http://ghostjson.pythonanywhere.com/playlist/`,
+              url: `https://imaworld-backend.herokuapp.com/playlist/`,
               data: '',
               headers:{
                 "Authorization" : "Token "+ localStorage.Token
@@ -284,7 +284,7 @@ section{
     padding: 10px;
     height: 250px;
     background: #535353;
-    overflow-y: auto;
+    overflow-y: scroll;
     margin: 0 auto;
 }
 
@@ -398,15 +398,20 @@ section{
     }
 
     .playlist{
-        display: flex;
+        /* display: flex;
         flex-wrap: wrap;
-        justify-content: flex-start;
-        flex-basis:calc(50% - 10px);
-        align-items: flex-start;
-        justify-content: center;
-        align-items: center;
-        flex-direction: row;
+        justify-content: flex-start; */
+        /* flex-basis:calc(50% - 10px); */
+        /* align-items: flex-start; */
+        /* justify-content: center; */
+        /* align-items: center; */
+        /* flex-direction: row; */
+
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(4, 40px);
         padding: 5px;
+
     }
     .video-item{
         margin-right: 5px;
@@ -419,6 +424,7 @@ section{
         grid-template-columns: repeat(3, 1fr);
         grid-template-rows: repeat(4, 60px);
         grid-gap: 0px;
+        overflow-y: auto;
     }
 
     .playlist-highlight .playlist .video-item{
@@ -440,7 +446,7 @@ section{
 .playlist-highlight{
     position: fixed;
     top: 60%;
-    height: 40vh;
+    height: 42vh;
     width: 100%;
 }
 

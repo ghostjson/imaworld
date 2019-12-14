@@ -6,7 +6,7 @@
     <div class="channels dragscroll">
         <div class="channel-container">
             <div class="channel" @click="playPlaylist">My Playlists</div>
-            <div class="channel" v-for="(channel,i) in channels" :key="i" @click="playChannel(i)">{{channel.name}}</div>
+            <div class="channel" v-for="(channel,i) in publishedChannels" :key="i" @click="playChannel(i)">{{channel.name}}</div>
         </div>
     </div>
     <section class="content">
@@ -84,6 +84,14 @@ export default {
             this.$root.$emit('changePlaylist', 'My Playlists')
         }
     },
+    computed: {
+        publishedChannels : function(){
+            return this.channels.filter(function(c){
+                return c.published
+            })
+        }
+    }
+    ,
     watch: {
         isSearch: function(val){
 
@@ -109,7 +117,7 @@ export default {
         let self = this
         axios({
           method: 'post',
-          url: `http://ghostjson.pythonanywhere.com/featured/`,
+          url: `https://imaworld-backend.herokuapp.com/featured/`,
           data: '',
           headers:{
             "Authorization" : "Token "+ localStorage.Token
@@ -124,7 +132,7 @@ export default {
 
         axios({
           method: 'post',
-          url: `http://ghostjson.pythonanywhere.com/channels/`,
+          url: `https://imaworld-backend.herokuapp.com/channels/`,
           data: '',
           headers:{
             "Authorization" : "Token "+ localStorage.Token
@@ -163,7 +171,7 @@ export default {
     justify-content: space-around;
     position: fixed;
     bottom: 40px;
-    right: 30px;
+    right: 10px;
     border: 2px solid #8eda3b;
     z-index: 2;
 }
@@ -302,7 +310,7 @@ section .s{
 
 @media (min-width: 320px){
     .channels::before{
-        margin: 0 250px;
+        margin: 0 80px;
     }
 }
 @media (min-width: 510px){

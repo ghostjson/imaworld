@@ -41,11 +41,14 @@
 					<input type="text" placeholder="new channel name here" name="addChannel" v-model="newChannel"><button @click="addChannel()">Add</button>
 					<button @click="state=1">Remove</button>
 					<button @click="state=2">Rename</button>
-					<span v-if="publish==0">
-						<button @click="withhold" class="withhold-btn">Withhold</button>
+					<span v-if="channels[chanN].published">
+						<button @click="setPublish(false)" class="withhold-btn">Unpublish</button>
 					</span>
 					<span v-else>
-						<button @click="publish" class="publish-btn">Publish</button>
+						<button @click="setPublish(true)" class="publish-btn">Publish</button>
+					</span>
+					<span class="duplicate">
+						<button class="duplicate-btn" @click="duplicate()">Duplicate</button>
 					</span>
 				</span>
 				<span v-if="state==1">
@@ -108,10 +111,15 @@
 				this.featured.splice(i, 1)
 				this.saveFeatured()
 			},
+			setPublish(val){
+				this.channels[this.chanN].published = val
+				this.saveChannel()
+			}
+			,
 			saveFeatured(){
 				axios({
 	              method: 'post',
-	              url: `http://ghostjson.pythonanywhere.com/saveFeatured/`,
+	              url: `https://imaworld-backend.herokuapp.com/saveFeatured/`,
 	              data: this.featured,
 	              headers:{
 	                "Authorization" : "Token "+ localStorage.Token
@@ -128,7 +136,7 @@
 				let self = this
 				let id  = this.youtube_parser(this.videolink)
 				axios
-			      .get(`http://ghostjson.pythonanywhere.com/getvideo/?query=${id}`)
+			      .get(`https://imaworld-backend.herokuapp.com/getvideo/?query=${id}`)
 			      .then(response => {
 			      	let video  = {
 			      		id :response.data[0].id,
@@ -149,25 +157,44 @@
 				if(this.newChannel != ''){
 					let channel  = {
 			      		name: this.newChannel,
-			      		videos : []
+						videos : [],
+						published: false  
 				   	};
 					this.channels.push(channel)
 					this.newChannel = ''
 					this.saveChannel()
 				}
 			},
+			duplicate(){
+				let name = ''
+				if(this.newChannel != ''){
+					name = this.newChannel
+				}else{
+					name = this.channels[this.chanN].name
+				}
+				let channel = {
+					name: name,
+					videos: this.channels[this.chanN].videos,
+					published: false
+				}
+
+				this.channels.push(channel)
+				this.newChannel = ''
+				this.saveChannel()
+			},
 			addChannelVideo(){
 				let self = this
 				let id  = this.youtube_parser(this.videolink)
 				axios
-			      .get(`http://ghostjson.pythonanywhere.com/getvideo/?query=${id}`)
+			      .get(`https://imaworld-backend.herokuapp.com/getvideo/?query=${id}`)
 			      .then(response => {
 			      	let video  = {
 			      		id :response.data[0].id,
 			      		title: response.data[0].snippet.title,
 			      		thumbnail: response.data[0].snippet.thumbnails.medium.url
 			      	};
-			      	console.log(video)
+					  console.log(video)
+					  console.log(self.channels)
 			      	self.channels[this.chanN].videos.push(video)
 			      	this.saveChannel()
 			      })
@@ -175,7 +202,7 @@
 			saveChannel(){
 				axios({
 	              method: 'post',
-	              url: `http://ghostjson.pythonanywhere.com/saveChannel/`,
+	              url: `https://imaworld-backend.herokuapp.com/saveChannel/`,
 	              data: this.channels,
 	              headers:{
 	                "Authorization" : "Token "+ localStorage.Token
@@ -208,7 +235,7 @@
         let self = this
         axios({
           method: 'post',
-          url: `http://ghostjson.pythonanywhere.com/isadmin/`,
+          url: `https://imaworld-backend.herokuapp.com/isadmin/`,
           data: 'isadmin',
           headers:{
             "Authorization" : "Token "+ localStorage.Token
@@ -227,7 +254,7 @@
 
 	    axios({
 	      method: 'post',
-	      url: `http://ghostjson.pythonanywhere.com/featured/`,
+	      url: `https://imaworld-backend.herokuapp.com/featured/`,
 	      data: '',
 	      headers:{
 	        "Authorization" : "Token "+ localStorage.Token
@@ -242,7 +269,7 @@
 
 	    axios({
 	      method: 'post',
-	      url: `http://ghostjson.pythonanywhere.com/channels/`,
+	      url: `https://imaworld-backend.herokuapp.com/channels/`,
 	      data: '',
 	      headers:{
 	        "Authorization" : "Token "+ localStorage.Token

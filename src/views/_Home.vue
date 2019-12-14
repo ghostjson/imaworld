@@ -91,7 +91,7 @@ export default
 	methods: {
 		getData(){
 			axios
-		      .get(`http://ghostjson.pythonanywhere.com/search/?query=${this.search}`)
+		      .get(`https://imaworld-backend.herokuapp.com/search/?query=${this.search}`)
 		      .then(response => (this.results = response))
 		},
 		addToPlaylist(i){
@@ -121,7 +121,7 @@ export default
 		save(){
 			axios({
 			  method: 'post',
-			  url: 'http://ghostjson.pythonanywhere.com/save/',
+			  url: 'https://imaworld-backend.herokuapp.com/save/',
 			  data: this.playlist,
 			  headers:{
 			  	"Authorization" : "Token "+ localStorage.Token

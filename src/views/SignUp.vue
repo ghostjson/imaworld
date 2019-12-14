@@ -55,7 +55,7 @@ export default {
 					axios({
 				
 					  method: 'post',
-					  url: `http://ghostjson.pythonanywhere.com/register/`,
+					  url: `https://imaworld-backend.herokuapp.com/register/`,
 					  data: {
 					  	'username':this.username,
 					  	'password':this.password,

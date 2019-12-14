@@ -42,7 +42,7 @@ export default {
 				try{
 					axios({
 					  method: 'post',
-					  url: `http://ghostjson.pythonanywhere.com/login/`,
+					  url: `https://imaworld-backend.herokuapp.com/login/`,
 					  data: {
 					  	'username':this.username,
 					  	'password':this.password,
