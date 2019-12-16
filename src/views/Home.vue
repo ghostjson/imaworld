@@ -442,6 +442,12 @@ background: linear-gradient(0deg, rgba(198,239,255,1) 0%, rgba(134,180,228,1) 69
         width: 100%;
     }
 
+    .channels .channel{
+        transform: scale(0.8);
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+
 }
 
 @media (min-width: 900px){

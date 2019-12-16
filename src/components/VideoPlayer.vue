@@ -34,7 +34,7 @@
             <draggable v-model="playlists[playN].videos" class="playlist" @end="isPlaylistChanged=1">
                 <div class="video-item" v-for="(video,i) in playlists[playN].videos" :key="i">
                     <img :src="video.thumbnail">
-                    <div class="video-details">
+                    <div class="video-details"  :title="video.title | requotes">
                         <div class="play" @click="playVideo(video)">
                             <img :src="require('@/assets/icons/play-button.svg')">
                         </div>
@@ -55,7 +55,7 @@
                 <draggable v-model="playlists[playN].videos" class="playlist" @end="isPlaylistChanged=1">
                     <div class="video-item" v-for="(video,i) in playlists[playN].videos" :key="i">
                         <img :src="video.thumbnail">
-                        <div class="video-details">
+                        <div class="video-details" >
                             <div class="play" @click="playVideo(video)">
                                 <img :src="require('@/assets/icons/play-button.svg')">
                             </div>
@@ -92,6 +92,7 @@ export default {
             addPlaylist: 0,
             playlistname: '',
             playlistHighlight: false,
+            currentHoverItem : ''
         }
     },
     methods: {
@@ -136,6 +137,14 @@ export default {
     created(){
 
     },
+		filters:{
+       	 requotes(val) {
+       	     let res = val.replace("&quot;", "\"")
+       	     res = res.replace("&#39;", "'")
+       	     res = res.replace("&amp;", "&")
+         	   return res
+        	}
+    	},
     mounted(){
 
         let self = this
@@ -261,11 +270,6 @@ export default {
 
 <style scoped>
 
-section{
-    padding-right: 30px;
-    padding-left: 30px;
-}
-
 
 .video-player{
     display: flex;
@@ -332,7 +336,11 @@ section{
 
 .playlist .video-item .video-details:hover{
     opacity: 1;
+
 }
+
+
+
 .playlist .video-item .video-details div{
     width: 100%;
     display: flex;

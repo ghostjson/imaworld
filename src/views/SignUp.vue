@@ -10,7 +10,7 @@
 					<input type="text" v-model="email" placeholder="Email"><br>
 					<input type="password" v-model="password" placeholder="Password"><br>
 					<input type="password" v-model="confirm_password" placeholder="Confirm Password"><br>
-					<input type="text" v-model="search_password" placeholder="Search Password"><br>
+					<input type="password" v-model="search_password" placeholder="Search Password"><br>
 					<input type="password" v-model="confirm_search_password" placeholder="Confirm Search Password"><br>
 					<button v-on:click="login">Submit</button>
 
