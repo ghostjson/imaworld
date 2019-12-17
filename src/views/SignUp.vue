@@ -49,7 +49,7 @@ export default {
 				let self = this
 
 
-				if(this.password == this.search_password && this.search_password == this.confirm_search_password){
+				if(this.password == this.confirm_password && this.search_password == this.confirm_search_password){
 
 					try{
 
