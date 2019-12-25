@@ -7,6 +7,7 @@ import Playlist from './views/Playlist.vue'
 import Logout from './views/Logout.vue'
 import SignUp from './views/SignUp.vue'
 import Admin from  './views/Admin.vue'
+import Download from './views/Download.vue'
 
 Vue.use(Router)
 
@@ -38,6 +39,11 @@ export default new Router({
       path: '/admin',
       name: 'admin',
       component: Admin
+    },
+    {
+      path: '/download',
+      name: 'download',
+      component: Download
     }
   ]
 })
