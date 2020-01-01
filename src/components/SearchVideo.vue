@@ -104,7 +104,7 @@
 				if(this.search != ''){
 					
 					axios
-				      .get(`https://imaworld-backend.herokuapp.com/search/?query=${this.search}&quatity=${this.quatity}&orderby=relevance`)
+				      .get(`http://47.75.187.3:8000/search/?query=${this.search}&quatity=${this.quatity}&orderby=relevance`)
 				      .then(response => {
 				      	this.searchResults = response
 				      })	
@@ -149,7 +149,7 @@
 			changeOrder(order){
 				if(this.search != ''){
 					axios
-				      .get(`https://imaworld-backend.herokuapp.com/search/?query=${this.search}&quatity=${this.quatity}&orderby=${order}`)
+				      .get(`http://47.75.187.3:8000/search/?query=${this.search}&quatity=${this.quatity}&orderby=${order}`)
 				      .then(response => (this.searchResults = response))			
 
 				    this.isShowMore = true	
@@ -160,7 +160,7 @@
 					let self = this
 					let id  = this.youtube_parser(this.search)
 					axios
-			      	.get(`https://imaworld-backend.herokuapp.com/getvideo/?query=${id}`)
+			      	.get(`http://47.75.187.3:8000/getvideo/?query=${id}`)
 			      	.then(response => {
 			      		let video  = {
 			      		id :response.data[0].id,
@@ -204,7 +204,7 @@
 			let self = this
         axios({
           method: 'post',
-          url: `https://imaworld-backend.herokuapp.com/getsp/`,
+          url: `http://47.75.187.3:8000/getsp/`,
           data: '',
           headers:{
             "Authorization" : "Token "+ localStorage.Token

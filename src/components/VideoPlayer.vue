@@ -181,7 +181,7 @@ export default {
 
             axios({
               method: 'post',
-              url: `https://imaworld-backend.herokuapp.com/save/`,
+              url: `http://47.75.187.3:8000/save/`,
               data: self.playlists,
               headers:{
                 "Authorization" : "Token "+ localStorage.Token
@@ -197,7 +197,7 @@ export default {
 
         axios({
           method: 'post',
-          url: `https://imaworld-backend.herokuapp.com/playlist/`,
+          url: `http://47.75.187.3:8000/playlist/`,
           data: '',
           headers:{
             "Authorization" : "Token "+ localStorage.Token
@@ -247,7 +247,7 @@ export default {
             let self = this
             axios({
               method: 'post',
-              url: `https://imaworld-backend.herokuapp.com/playlist/`,
+              url: `http://47.75.187.3:8000/playlist/`,
               data: '',
               headers:{
                 "Authorization" : "Token "+ localStorage.Token

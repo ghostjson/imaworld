@@ -62,7 +62,7 @@ export default {
 						axios({
 					
 						method: 'post',
-						url: `https://imaworld-backend.herokuapp.com/register/`,
+						url: `http://47.75.187.3:8000/register/`,
 						data: {
 							'username':this.username,
 							'password':this.password,

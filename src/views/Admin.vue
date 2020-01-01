@@ -119,7 +119,7 @@
 			saveFeatured(){
 				axios({
 	              method: 'post',
-	              url: `https://imaworld-backend.herokuapp.com/saveFeatured/`,
+	              url: `http://47.75.187.3:8000/saveFeatured/`,
 	              data: this.featured,
 	              headers:{
 	                "Authorization" : "Token "+ localStorage.Token
@@ -136,7 +136,7 @@
 				let self = this
 				let id  = this.youtube_parser(this.videolink)
 				axios
-			      .get(`https://imaworld-backend.herokuapp.com/getvideo/?query=${id}`)
+			      .get(`http://47.75.187.3:8000/getvideo/?query=${id}`)
 			      .then(response => {
 			      	let video  = {
 			      		id :response.data[0].id,
@@ -186,7 +186,7 @@
 				let self = this
 				let id  = this.youtube_parser(this.videolink)
 				axios
-			      .get(`https://imaworld-backend.herokuapp.com/getvideo/?query=${id}`)
+			      .get(`http://47.75.187.3:8000/getvideo/?query=${id}`)
 			      .then(response => {
 			      	let video  = {
 			      		id :response.data[0].id,
@@ -202,7 +202,7 @@
 			saveChannel(){
 				axios({
 	              method: 'post',
-	              url: `https://imaworld-backend.herokuapp.com/saveChannel/`,
+	              url: `http://47.75.187.3:8000/saveChannel/`,
 	              data: this.channels,
 	              headers:{
 	                "Authorization" : "Token "+ localStorage.Token
@@ -235,7 +235,7 @@
         let self = this
         axios({
           method: 'post',
-          url: `https://imaworld-backend.herokuapp.com/isadmin/`,
+          url: `http://47.75.187.3:8000/isadmin/`,
           data: 'isadmin',
           headers:{
             "Authorization" : "Token "+ localStorage.Token
@@ -254,7 +254,7 @@
 
 	    axios({
 	      method: 'post',
-	      url: `https://imaworld-backend.herokuapp.com/featured/`,
+	      url: `http://47.75.187.3:8000/featured/`,
 	      data: '',
 	      headers:{
 	        "Authorization" : "Token "+ localStorage.Token
@@ -269,7 +269,7 @@
 
 	    axios({
 	      method: 'post',
-	      url: `https://imaworld-backend.herokuapp.com/channels/`,
+	      url: `http://47.75.187.3:8000/channels/`,
 	      data: '',
 	      headers:{
 	        "Authorization" : "Token "+ localStorage.Token

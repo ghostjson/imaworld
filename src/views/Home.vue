@@ -117,7 +117,7 @@ export default {
         let self = this
         axios({
           method: 'post',
-          url: `https://imaworld-backend.herokuapp.com/featured/`,
+          url: `http://47.75.187.3:8000/featured/`,
           data: '',
           headers:{
             "Authorization" : "Token "+ localStorage.Token
@@ -132,7 +132,7 @@ export default {
 
         axios({
           method: 'post',
-          url: `https://imaworld-backend.herokuapp.com/channels/`,
+          url: `http://47.75.187.3:8000/channels/`,
           data: '',
           headers:{
             "Authorization" : "Token "+ localStorage.Token

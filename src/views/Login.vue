@@ -42,7 +42,7 @@ export default {
 				try{
 					axios({
 					  method: 'post',
-					  url: `https://imaworld-backend.herokuapp.com/login/`,
+					  url: `http://47.75.187.3:8000/login/`,
 					  data: {
 					  	'username':this.username,
 					  	'password':this.password,
