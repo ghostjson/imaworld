@@ -441,9 +441,6 @@ export default {
 
     }
 
-    .playlist-highlight .playlist .video-item .video-details{
-        /* top:  */
-    }
 }
 
 @media (min-width:901px){
