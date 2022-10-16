@@ -1,4 +1,4 @@
-# front-imaworld
+# frontend-imaworld
 
 ## Project setup
 ```
